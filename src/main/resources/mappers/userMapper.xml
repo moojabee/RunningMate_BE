@@ -3,8 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lswr.demo.model.dao.UserDao">
+	<!-- UserList 조회 -->
 	<select id="selectAll" resultType="User">
 		SELECT * 
 		FROM user
 	</select>
+    <!-- User 삽입 메서드 -->
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO USER (email, password, name, nickname, address
+            <if test="isPrivate != null">
+                , private
+            </if>
+        ) 
+        VALUES (#{email}, #{password}, #{name}, #{nickname}, #{address}
+            <if test="isPrivate != null">
+                , #{isPrivate}
+            </if>
+        )
+    </insert>
+    
 </mapper>

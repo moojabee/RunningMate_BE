@@ -16,9 +16,22 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserDao userDao;
 	
+    public boolean isEmailDuplicated(String email) {
+        
+    }
+    
+    public boolean isEmailDuplicated(String nickName) {
+        
+    }
+	
 	@Override
 	public List<User> getUserList() {
 		List<User> list = userDao.selectAll();
 		return list;
+	}
+
+	@Override
+	public void registUser(User user) {
+		userDao.insertUser(user);
 	}
 }
