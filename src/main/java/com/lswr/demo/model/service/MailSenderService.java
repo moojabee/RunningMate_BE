@@ -34,6 +34,7 @@ public class MailSenderService {
         };
 
         try {
+        	log.info(email.getEmail());
             this.mailSender.send(preparator);
         } catch (MailException e) {
             log.info("ERROR: Message 전송 실패");

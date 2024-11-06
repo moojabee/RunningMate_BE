@@ -21,5 +21,23 @@
             </if>
         )
     </insert>
+    <!-- email User 조회 -->
+    <select id="selectUserByEmail" parameterType="String" resultType="User">
+		SELECT * 
+		FROM user
+		WHERE email = #{email}
+	</select>
+	<!-- nickname User 조회 -->
+	<select id="selectUserByNickname" parameterType="String" resultType="User">
+		SELECT * 
+		FROM user
+		where nickname = #{nickname}
+	</select>
+	<!-- User 로그인 -->
+	<select id="login" parameterType="LoginDto" resultType="User">
+		SELECT * 
+		FROM user
+		where email = #{email} and password = #{password}
+	</select>
     
 </mapper>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lswr.demo.model.dto.EmailDto;
+import com.lswr.demo.model.dto.LoginDto;
 import com.lswr.demo.model.dto.User;
 import com.lswr.demo.model.service.MailSenderService;
 import com.lswr.demo.model.service.UserService;
@@ -36,14 +37,32 @@ public class UserController {
 	
 	@PostMapping("/send")
 	public ResponseEntity<String> sendEmail(@RequestBody EmailDto email) throws MessagingException{
+		log.info("이메일 요청을 보냄");
 		mailService.sendEmail(email);
-		return new ResponseEntity("GOOD JOB",HttpStatus.OK);
+		return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
 	}
 	
 	@PostMapping("/regist")
 	public ResponseEntity<String> registUser(@RequestBody User user){
-		log.info("잘찾아왔음");
+		if(userService.isEmailDuplicated(user.getEmail())) {
+			// log.info("이메일 중복");
+			return new ResponseEntity<String>("Duplicate Email",HttpStatus.BAD_REQUEST);
+		}
+		if(userService.isNicknameDuplicated(user.getNickname())) {
+			// log.info("닉네임 중복");
+			return new ResponseEntity<String>("Duplicate Nickname",HttpStatus.BAD_REQUEST);
+		}
+		// log.info("가입 완료");
 		userService.registUser(user);
-		return new ResponseEntity("GOOD JOB",HttpStatus.OK);
+		return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
+		if(userService.loginUser(loginDto)) {
+			return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
+
+		}
+		return new ResponseEntity<String>("Not User",HttpStatus.BAD_REQUEST);
 	}
 }
