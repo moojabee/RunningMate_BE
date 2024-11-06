@@ -5,48 +5,63 @@
 <mapper namespace="com.lswr.demo.model.dao.BoardDao">
 	
 	<!-- 게시글 조회 - 팔로우 -->
-	<select id="selectFollowAll">
-		
+	<select id="selectFollowAll" parameterType="long" resultType="com.lswr.demo.model.dto.Board">
+		SELECT b.*
+		FROM Board b
+		JOIN Following f ON f.following_id = b.user_id
+		WHERE f.user_id = #{userId}
 	</select>
 	
 	<!-- 게시글 조회 - 동네 -->
-	<select id="selectNeighborAll">
-		
+	<select id="selectNeighborAll" parameterType="long" resultType="com.lswr.demo.model.dto.Board">
+		SELECT b.*
+		FROM Board b
+		JOIN User u ON b.user_id = u.user_id
+		WHERE u.address = (SELECT address FROM User WHERE user_id = #{userId})
 	</select>
 	
 	<!-- 게시글 작성 -->
-	<insert id="insertBoard">
-		
+	<insert id="insertBoard" parameterType="com.lswr.demo.model.dto.Board" useGeneratedKeys="true" keyProperty="board_id">
+		INSERT INTO Board (user_id, content, posted_date)
+		VALUES (#{user_id}, #{content}, NOW())
 	</insert>
 	
 	<!-- 게시글 수정 -->
-	<update id="updateBoard">
-		
+	<update id="updateBoard" parameterType="com.lswr.demo.model.dto.Board">
+		UPDATE Board
+		SET content = #{content}
+		WHERE board_id = #{board_id}
 	</update>
 	
 	<!-- 게시글 삭제 -->
-	<delete id="deleteBoard">
-		
+	<delete id="deleteBoard" parameterType="long">
+		DELETE FROM Board WHERE board_id = #{boardId}
 	</delete>
 	
 	<!-- 좋아요 -->
-	<update id="likeBoard">
-		
-	</update>
+	<insert id="likeBoard" parameterType="map">
+		INSERT INTO Like (user_id, board_id)
+		SELECT #{userId}, #{boardId}
+		FROM DUAL
+		WHERE NOT EXISTS (
+			SELECT 1 FROM Like WHERE user_id = #{userId} AND board_id = #{boardId}
+		)
+	</insert>
 	
 	<!-- 좋아요 취소 -->
-	<update id="dislikeBoard">
-		
-	</update>
+	<delete id="dislikeBoard" parameterType="map">
+		DELETE FROM Like
+		WHERE user_id = #{userId} AND board_id = #{boardId}
+	</delete>
 	
 	<!-- 좋아요 개수 -->
-	<select id="countLike">
-		
+	<select id="countLike" parameterType="long" resultType="int">
+		SELECT COUNT(*) FROM Like WHERE board_id = #{boardId}
 	</select>
 	
 	<!-- 댓글 개수 -->
-	<select id="countComment">
-		
+	<select id="countComment" parameterType="long" resultType="int">
+		SELECT COUNT(*) FROM Comment WHERE board_id = #{boardId}
 	</select>
 	
 	    
