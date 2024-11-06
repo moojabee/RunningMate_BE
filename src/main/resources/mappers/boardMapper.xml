@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lswr.demo.model.dao.BoardDao">
+	
+	<!-- 게시글 조회 - 팔로우 -->
+	<select id="selectFollowAll">
+		
+	</select>
+	
+	<!-- 게시글 조회 - 동네 -->
+	<select id="selectNeighborAll">
+		
+	</select>
+	
+	<!-- 게시글 작성 -->
+	<insert id="insertBoard">
+		
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateBoard">
+		
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard">
+		
+	</delete>
+	
+	<!-- 좋아요 -->
+	<update id="likeBoard">
+		
+	</update>
+	
+	<!-- 좋아요 취소 -->
+	<update id="dislikeBoard">
+		
+	</update>
+	
+	<!-- 좋아요 개수 -->
+	<select id="countLike">
+		
+	</select>
+	
+	<!-- 댓글 개수 -->
+	<select id="countComment">
+		
+	</select>
+	
+	    
+</mapper>
