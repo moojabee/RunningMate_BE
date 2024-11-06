@@ -61,7 +61,6 @@ public class UserController {
 	public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
 		if(userService.loginUser(loginDto)) {
 			return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
-
 		}
 		return new ResponseEntity<String>("Not User",HttpStatus.BAD_REQUEST);
 	}

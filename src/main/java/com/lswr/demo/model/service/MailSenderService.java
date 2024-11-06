@@ -26,7 +26,7 @@ public class MailSenderService {
             // 받는 사람 이메일 
             helper.setTo(email.getEmail());
             // 이메일 제목
-            helper.setSubject("MimeMessageHelper Subject");
+            helper.setSubject("비밀번호 변경 알림");
             // 메일 내용
             helper.setText("this is MimeMessageHelper test");
 
