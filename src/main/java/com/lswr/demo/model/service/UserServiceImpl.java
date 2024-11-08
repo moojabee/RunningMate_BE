@@ -35,6 +35,13 @@ public class UserServiceImpl implements UserService{
 		List<User> list = userDao.selectAll();
 		return list;
 	}
+	
+	@Override
+	public User getUser(String email) {
+		Optional<User> user = userDao.selectUserByEmail(email);
+		if(user.isEmpty()) return null;
+		return user.get();
+	}
 
 	@Override
 	public void registUser(User user) {
