@@ -12,5 +12,5 @@ public class Comment {
 	private Long boardId;
 	private Long userId;
     private String content;
-    private LocalDateTime  postedDate;
+    private LocalDateTime postedDate;
 }

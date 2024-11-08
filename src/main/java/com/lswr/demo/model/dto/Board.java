@@ -1,6 +1,7 @@
 package com.lswr.demo.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Board {
-	private Long boardId;
 	private Long userId;
+	private String userDist;
+	private String userPace;
+	
+	private Long boardId;
     private String content;
-    private LocalDateTime  postedDate;
+    private LocalDateTime postedDate;
+    
+    private List<BoardImg> boardImg;
+    private List<Comment> comment;
+    private List<Like> like;
 }

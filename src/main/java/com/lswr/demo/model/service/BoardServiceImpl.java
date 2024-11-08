@@ -54,6 +54,7 @@ public class BoardServiceImpl implements BoardService{
         board.setContent(content);
         boardDao.insertBoard(board);
         
+        // 이미지 처리 추가 예정
         
 	}
 
@@ -64,6 +65,7 @@ public class BoardServiceImpl implements BoardService{
         board.setContent(content);
         boardDao.updateBoard(board);
         
+        // 이미지 처리 추가 예정
         
 	}
 
@@ -72,12 +74,10 @@ public class BoardServiceImpl implements BoardService{
 		Board board = new Board();
         board.setBoardId(boardId);
         boardDao.deleteBoard(board);
-
+        
+        // 이미지 처리 추가 예정
 		
 	}
-	
-	
-	
 	
 	
 }
