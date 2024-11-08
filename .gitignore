@@ -46,3 +46,5 @@ out/
 *.swp
 *.swo
 
+# Maven 설정 파일
+pom.xml
