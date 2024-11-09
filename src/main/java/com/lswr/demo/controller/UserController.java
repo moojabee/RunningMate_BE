@@ -42,7 +42,7 @@ public class UserController {
 		return ResponseEntity.ok(list);
 	}
 	
-	@PostMapping("/send")
+	@PostMapping("/change-password")
 	public ResponseEntity<String> sendEmail(@RequestBody EmailDto email) throws MessagingException{
 		log.info("이메일 요청을 보냄");
 		mailService.sendEmail(email);
