@@ -117,7 +117,7 @@ CREATE TABLE `RunImg` (
 
 
 INSERT INTO `User` (`email`, `password`, `name`, `nickname`, `address`) VALUES
-('user1@example.com', 'pwd1', '홍길동', 'seoul1', '서울특별시 강남구'),
+('tlgmdtl1118@gmail.com', 'pwd1', '홍길동', 'seoul1', '서울특별시 강남구'),
 ('user2@example.com', 'pwd2', '김영희', 'seoul2', '서울특별시 서초구'),
 ('user3@example.com', 'pwd3', '이철수', 'seoul3', '서울특별시 송파구'),
 ('user4@example.com', 'pwd4', '박민수', 'seoul4', '서울특별시 마포구'),
@@ -127,3 +127,6 @@ INSERT INTO `User` (`email`, `password`, `name`, `nickname`, `address`) VALUES
 ('user8@example.com', 'pwd8', '윤상혁', 'seoul8', '서울특별시 용산구'),
 ('user9@example.com', 'pwd9', '배수빈', 'seoul9', '서울특별시 은평구'),
 ('user10@example.com', 'pwd10', '김하늘', 'seoul10', '서울특별시 종로구');
+
+select *
+from user;

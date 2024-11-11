@@ -10,6 +10,7 @@ public interface UserDao {
 	
 	List<User> selectAll();
 	void insertUser(User user);
+	void updateUser(User user);
 	Optional<User> selectUserByEmail(String email);
 	Optional<User> selectUserByNickname(String nickname);
 	Optional<User> login(LoginDto loginDto);

@@ -24,4 +24,7 @@ public interface UserService {
 	
 	// 로그인
 	public boolean loginUser(LoginDto loginDto);
+	
+	// 회원정보 변경
+	public void updateUser(User user);
 }

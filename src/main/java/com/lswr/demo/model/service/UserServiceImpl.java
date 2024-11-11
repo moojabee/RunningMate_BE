@@ -53,4 +53,9 @@ public class UserServiceImpl implements UserService{
 		Optional<User> user = userDao.login(loginDto);
 		return user.isPresent();
 	}
+
+	@Override
+	public void updateUser(User user) {
+		userDao.updateUser(user);
+	}
 }
