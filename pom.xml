@@ -86,6 +86,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<!-- AWS SDK for S3 -->
+	    <dependency>
+	        <groupId>software.amazon.awssdk</groupId>
+	        <artifactId>s3</artifactId>
+	        <version>2.29.9</version>
+	    </dependency>
+	    <!-- AWS SDK Core (선택 사항) -->
+	    <dependency>
+	        <groupId>software.amazon.awssdk</groupId>
+	        <artifactId>sdk-core</artifactId>
+	        <version>2.29.9</version>
+	    </dependency>
+	    <!-- Apache HTTP Client (Optional) -->
+		<dependency>
+		    <groupId>software.amazon.awssdk</groupId>
+		    <artifactId>apache-client</artifactId>
+		    <version>2.29.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>
