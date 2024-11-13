@@ -1,13 +1,17 @@
 package com.lswr.demo.model.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lswr.demo.model.dao.BoardDao;
 import com.lswr.demo.model.dto.Board;
 import com.lswr.demo.model.dto.BoardImg;
+import com.lswr.demo.util.S3Uploader;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +21,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
 	private BoardDao boardDao;
+	
+	@Autowired
+	private S3Uploader s3Uploader;
 
 	// 팔로워 게시글 조회
 	@Override
@@ -43,28 +50,52 @@ public class BoardServiceImpl implements BoardService{
 
 	// 게시글 생성
 	@Override
-    public void createBoard(Board board) {
-        boardDao.insertBoard(board);
-        if (board.getBoardImg() != null) {
-            for (BoardImg img : board.getBoardImg()) {
-                img.setBoardId(board.getBoardId());
-                boardDao.insertBoardImg(img);
-            }
+    public void createBoard(Board board, List<MultipartFile> files) {
+        boardDao.insertBoard(board);  // 게시글 내용 저장
+        try {
+	        // 이미지 파일이 있는 경우 처리
+	        if (files != null && !files.isEmpty()) {
+	            List<BoardImg> boardImgs = new ArrayList<>();
+	            for (MultipartFile file : files) {
+	                String imageUrl = s3Uploader.upload(file);  // S3에 업로드 후 URL 반환
+	                BoardImg boardImg = new BoardImg();
+	                boardImg.setBoardId(board.getBoardId());
+	                boardImg.setFileName(imageUrl);
+	                boardImgs.add(boardImg);
+	            }
+	            // 이미지 URL을 DB에 저장
+	            for (BoardImg img : boardImgs) {
+	                boardDao.insertBoardImg(img);
+	            }
+	        }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);  // 커스텀 예외 처리
         }
     }
 
 	// 게시글 수정
     @Override
-    public void updateBoard(Board board) {
-        boardDao.updateBoard(board); // 기본 게시글 내용 업데이트
-
-        // 새 이미지가 있을 경우
-        if (board.getBoardImg() != null && !board.getBoardImg().isEmpty()) {
-            boardDao.deleteBoardImg(board.getBoardId());  // 기존 이미지 삭제
-            for (BoardImg img : board.getBoardImg()) {
-                img.setBoardId(board.getBoardId());
-                boardDao.insertBoardImg(img);  // 새 이미지 추가
-            }
+    public void updateBoard(Board board, List<MultipartFile> files) {
+        boardDao.updateBoard(board); // 게시글 내용 업데이트
+        try {
+        	// 기존 이미지 삭제 후 새로운 이미지 저장
+        	if (files != null && !files.isEmpty()) {
+        		boardDao.deleteBoardImg(board.getBoardId());  // 기존 이미지 삭제
+        		List<BoardImg> boardImgs = new ArrayList<>();
+        		for (MultipartFile file : files) {
+        			String imageUrl = s3Uploader.upload(file);  // S3에 업로드 후 URL 반환
+        			BoardImg boardImg = new BoardImg();
+        			boardImg.setBoardId(board.getBoardId());
+        			boardImg.setFileName(imageUrl);
+        			boardImgs.add(boardImg);
+        		}
+        		// 새로운 이미지 URL을 DB에 저장
+        		for (BoardImg img : boardImgs) {
+        			boardDao.insertBoardImg(img);
+        		}
+        	}
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);  // 일반 예외 처리
         }
     }
 

@@ -46,21 +46,31 @@ public class BoardController {
 	}
 
 	// 게시글 작성
-	@PostMapping("/create")
-	public ResponseEntity<?> createBoard(@RequestAttribute("userId") Long userId, @ModelAttribute Board board) {
-		board.setUserId(userId);
-		boardService.createBoard(board);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+	@PostMapping("/create/{userId}")
+	public ResponseEntity<?> createBoard(@PathVariable Long userId,
+	                                     @RequestParam("content") String content,
+	                                     @RequestParam("boardImg") List<MultipartFile> files) {
+	    Board board = new Board();
+	    board.setUserId(userId);
+	    board.setContent(content);
+	    boardService.createBoard(board, files);  // files를 따로 전달
+	    return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	// 게시글 수정
-	@PutMapping("/update/{boardId}")
-	public ResponseEntity<?> updateBoard(@PathVariable Long boardId, @RequestAttribute("userId") Long userId, @ModelAttribute Board board) {
-		board.setBoardId(boardId);
-		board.setUserId(userId);
-		boardService.updateBoard(board);
-		return ResponseEntity.ok().build();
+	@PutMapping("/update/{userId}/{boardId}")
+	public ResponseEntity<?> updateBoard(@PathVariable Long userId,
+										 @PathVariable Long boardId,
+	                                     @RequestParam("content") String content,
+	                                     @RequestParam("boardImg") List<MultipartFile> files) {
+	    Board board = new Board();
+	    board.setBoardId(boardId);
+	    board.setUserId(userId);
+	    board.setContent(content);
+	    boardService.updateBoard(board, files);  // files를 따로 전달
+	    return ResponseEntity.ok().build();
 	}
+
 
 	// 게시글 삭제
 	@DeleteMapping("/delete/{boardId}")
@@ -70,14 +80,7 @@ public class BoardController {
 	}
 	
 	
-//	//파일업로드
-//	@PostMapping("/upload")
-//	public ResponseEntity<Void> fileUpload(@RequestParam("file") MultipartFile file, @ModelAttribute Board board){
-//		
-//		boardService.fileUpload(file, board);
-//		
-//		
-//		return new ResponseEntity<>(HttpStatus.OK);
-//	}
-
+	
+	
+	
 }

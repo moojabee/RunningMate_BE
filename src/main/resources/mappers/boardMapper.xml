@@ -114,7 +114,7 @@
     </update>
 
     <!-- 게시글 이미지 삭제 (게시글 수정 시 사용) -->
-    <delete id="deleteBoardImages" parameterType="long">
+    <delete id="deleteBoardImg" parameterType="long">
         DELETE FROM Store
         WHERE board_id = #{boardId}
     </delete>

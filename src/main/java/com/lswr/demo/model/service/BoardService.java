@@ -2,6 +2,8 @@ package com.lswr.demo.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.lswr.demo.model.dto.Board;
 
 public interface BoardService {
@@ -19,12 +21,12 @@ public interface BoardService {
 	public void getBoardDislike(Long userId, Long boardId);
 	
 	// 게시글 생성
-	public void createBoard(Board board);
-	
-	// 게시글 수정
-	public void updateBoard(Board board);
-	
-	// 게시글 삭제
-	public void deleteBoard(Long boardId, Long userId);
+    void createBoard(Board board, List<MultipartFile> files);
+    
+    // 게시글 수정
+    void updateBoard(Board board, List<MultipartFile> files);
+    
+    // 게시글 삭제
+    void deleteBoard(Long boardId, Long userId);
 	
 }
