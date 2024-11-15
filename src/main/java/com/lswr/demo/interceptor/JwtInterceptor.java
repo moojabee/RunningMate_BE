@@ -24,7 +24,6 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
         String authorizationHeader = request.getHeader("Authorization");
-        log.info("요청이 들어오긴 왔다만...");
 
         // Authorization 헤더가 없으면 인증 실패
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
@@ -52,6 +51,4 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 요청을 계속 처리할 수 있도록 허용
         return true;
 	}
-    
-    
 }
