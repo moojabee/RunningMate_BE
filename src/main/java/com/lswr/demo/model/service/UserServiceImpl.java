@@ -18,18 +18,20 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserDao userDao;
 	
-    public boolean isEmailDuplicated(String email) {
-        Optional<User> user = userDao.selectUserByEmail(email);
-        if(user.isEmpty()) return false;
-        return true;
-    }
-    
-    public boolean isNicknameDuplicated(String nickname) {
-        Optional<User> user = userDao.selectUserByNickname(nickname);
-        if(user.isEmpty()) return false;
-        return true;
-    } 
-	
+	@Override
+	public boolean isValidEmail(String email) {
+		User user =userDao.selectUserByEmail(email);
+		if(user==null) return true;
+		else return false;
+	}
+
+	@Override
+	public boolean isValidNickname(String nickname) {
+		User user =userDao.selectUserByEmail(nickname);
+		if(user==null) return true;
+		else return false;
+	}
+
 	@Override
 	public List<User> getUserList() {
 		List<User> list = userDao.selectAll();
@@ -38,20 +40,22 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public User getUser(String email) {
-		Optional<User> user = userDao.selectUserByEmail(email);
-		if(user.isEmpty()) return null;
-		return user.get();
+		User user = userDao.selectUserByEmail(email);
+		if(user==null) return null;
+		log.info(user.toString());
+		return user;
 	}
 
 	@Override
 	public void registUser(User user) {
+		log.info(user.toString());
 		userDao.insertUser(user);
 	}
 
 	@Override
 	public boolean loginUser(LoginDto loginDto) {
-		Optional<User> user = userDao.login(loginDto);
-		return user.isPresent();
+		User user = userDao.login(loginDto);
+		return user!=null;
 	}
 
 	@Override
