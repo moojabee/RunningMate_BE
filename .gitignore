@@ -8,6 +8,7 @@ Desktop.ini
 .project
 .classpath
 .settings/
+.factorypath
 
 # Maven/Gradle 빌드 디렉토리
 target/

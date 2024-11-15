@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class Board {
 	private Long userId;
+	private String nickname;
 	private String userDist;
 	private String userPace;
 	

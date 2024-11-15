@@ -34,42 +34,46 @@
 	    WHERE user_id = #{userId}
 	</select>
 
-    <!-- 게시글 정보 조회 쿼리 (유저 ID 목록을 필터로 사용) -->
-    <select id="getBoardsByUserIds" parameterType="list" resultMap="BoardResultMap">
+	<!-- 게시글 정보 조회 쿼리 (유저 ID 목록을 필터로 사용) -->
+	<select id="getBoardsByUserIds" parameterType="list" resultMap="BoardResultMap">
 	    SELECT b.board_id, b.user_id, b.content, b.posted_date,
+	           u.nickname AS userNickname,
 	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	           CONCAT(
 	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
 	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
 	           ) AS userPace
 	    FROM Board b
+	    JOIN User u ON b.user_id = u.user_id
 	    LEFT JOIN Record r ON b.user_id = r.user_id
 	    WHERE b.user_id IN
 	    <foreach item="userId" collection="userIds" open="(" separator="," close=")">
 	        #{userId}
 	    </foreach>
-	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date
+	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname 
 	    ORDER BY b.posted_date DESC
 	</select>
+	
+	<!-- BoardResultMap: Board와 관련된 Comment, Like, Store 테이블 데이터를 가져오는 설정 -->
+	<resultMap id="BoardResultMap" type="com.lswr.demo.model.dto.Board">
+	    <id property="boardId" column="board_id"/>
+	    <result property="userId" column="user_id"/>
+	    <result property="content" column="content"/>
+	    <result property="postedDate" column="posted_date"/>
+	    <result property="userDist" column="userDist"/>
+	    <result property="userPace" column="userPace"/>
+	    <result property="nickname" column="userNickname"/>
+	
+	    <!-- 댓글 리스트 매핑 -->
+	    <collection property="comment" ofType="com.lswr.demo.model.dto.Comment" column="board_id" select="getCommentByBoardId"/>
+	
+	    <!-- 좋아요 리스트 매핑 -->
+	    <collection property="like" ofType="com.lswr.demo.model.dto.Like" column="board_id" select="getLikeByBoardId"/>
+	
+	    <!-- 게시글 이미지 리스트 매핑 -->
+	    <collection property="boardImg" ofType="com.lswr.demo.model.dto.BoardImg" column="board_id" select="getBoardImgByBoardId"/>
+	</resultMap>
 
-    <!-- BoardResultMap: Board와 관련된 Comment, Like, Store 테이블 데이터를 가져오는 설정 -->
-    <resultMap id="BoardResultMap" type="com.lswr.demo.model.dto.Board">
-        <id property="boardId" column="board_id"/>
-        <result property="userId" column="user_id"/>
-        <result property="content" column="content"/>
-        <result property="postedDate" column="posted_date"/>
-        <result property="userDist" column="userDist"/>
-        <result property="userPace" column="userPace"/>
-
-        <!-- 댓글 리스트 매핑 -->
-        <collection property="comment" ofType="com.lswr.demo.model.dto.Comment" column="board_id" select="getCommentByBoardId"/>
-
-        <!-- 좋아요 리스트 매핑 -->
-        <collection property="like" ofType="com.lswr.demo.model.dto.Like" column="board_id" select="getLikeByBoardId"/>
-
-        <!-- 게시글 이미지 리스트 매핑 -->
-        <collection property="boardImg" ofType="com.lswr.demo.model.dto.BoardImg" column="board_id" select="getBoardImgByBoardId"/>
-    </resultMap>
 
     <!-- 댓글 정보 조회 쿼리 -->
     <select id="getCommentByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Comment">

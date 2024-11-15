@@ -77,10 +77,10 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public void updateBoard(Board board, List<MultipartFile> files) {
         boardDao.updateBoard(board); // 게시글 내용 업데이트
+        boardDao.deleteBoardImg(board.getBoardId());  // 기존 이미지 삭제
         try {
         	// 기존 이미지 삭제 후 새로운 이미지 저장
         	if (files != null && !files.isEmpty()) {
-        		boardDao.deleteBoardImg(board.getBoardId());  // 기존 이미지 삭제
         		List<BoardImg> boardImgs = new ArrayList<>();
         		for (MultipartFile file : files) {
         			String imageUrl = s3Uploader.upload(file);  // S3에 업로드 후 URL 반환
