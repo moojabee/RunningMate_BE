@@ -27,15 +27,15 @@ public class MailSenderService {
 	private final JavaMailSender mailSender;
 	private final UserService userService;
 
-	public void sendEmail(EmailDto email) throws MessagingException {
+	public void sendEmail(String email) throws MessagingException {
 	    MimeMessagePreparator preparator = mimeMessage -> {
 	        
 	        // HTML 템플릿 로드
 	        String htmlContent = loadHtmlTemplate("static/email-template.html");
 	        
 	        // 비밀번호 변경 후 템플릿에 값 치환
-	        String newPassword = changePassword(email.getEmail());
-	        String userName = userService.getUser(email.getEmail()).getName() + "님 안녕하세요";
+	        String newPassword = changePassword(email);
+	        String userName = userService.getUser(email).getName() + "님 안녕하세요";
 
 	        // {{number}}와 {{name}} 치환
 	        htmlContent = htmlContent.replace("{{number}}", newPassword)
@@ -44,7 +44,7 @@ public class MailSenderService {
 	        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 	        
 	        // 받는 사람 이메일
-	        helper.setTo(email.getEmail());
+	        helper.setTo(email);
 	        // 이메일 제목
 	        helper.setSubject("비밀번호 변경 알림");
 	        // 메일 내용
@@ -52,15 +52,17 @@ public class MailSenderService {
 	    };
 
 	    try {
-	        log.info(email.getEmail());
+	        log.info(email);
 	        this.mailSender.send(preparator);
 	    } catch (MailException e) {
 	        log.info("ERROR: Message 전송 실패");
 	        throw e;
 	    }
 	}	
+	
 	private String changePassword(String email) {
 		User user = userService.getUser(email);
+		log.info("changePassword : " + user);
 		String newPassword = randomString();
 		user.setPassword(newPassword);
 		userService.updateUser(user);

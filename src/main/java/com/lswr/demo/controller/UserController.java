@@ -2,6 +2,7 @@ package com.lswr.demo.controller;
 
 import java.util.List;
 
+import org.springframework.context.expression.MapAccessor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.RequestContext;
 
@@ -28,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("")
+@RequestMapping("userAuth")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -37,30 +39,21 @@ public class UserController {
 	private final TokenService tokenService;
 	
 	@GetMapping("/")
-	public ResponseEntity<?> getUserList(@RequestAttribute("userId") String userId) {
-		log.info(userId);
+	public ResponseEntity<?> getUserList() {
 		List<User> list = userService.getUserList();
 		return ResponseEntity.ok(list);
 	}
 	
-	@PostMapping("/change-password")
-	public ResponseEntity<String> sendEmail(@RequestBody EmailDto email) throws MessagingException{
-		log.info("이메일 요청을 보냄");
+	@PostMapping("/find-password")
+	public ResponseEntity<String> sendEmail(@RequestBody EmailDto emailDto) throws MessagingException{
+		String email = emailDto.getEmail();
 		mailService.sendEmail(email);
 		return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
 	}
 	
 	@PostMapping("/regist")
 	public ResponseEntity<String> registUser(@RequestBody User user){
-		if(userService.isEmailDuplicated(user.getEmail())) {
-			// log.info("이메일 중복");
-			return new ResponseEntity<String>("Duplicate Email",HttpStatus.BAD_REQUEST);
-		}
-		if(userService.isNicknameDuplicated(user.getNickname())) {
-			// log.info("닉네임 중복");
-			return new ResponseEntity<String>("Duplicate Nickname",HttpStatus.BAD_REQUEST);
-		}
-		// log.info("가입 완료");
+		log.info("loginUser : "+user.toString());
 		userService.registUser(user);
 		return new ResponseEntity<String>("GOOD JOB",HttpStatus.OK);
 	}
@@ -77,5 +70,17 @@ public class UserController {
             return new ResponseEntity<>(user.getName(),headers,HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Not User",HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping("/email-check")
+	public ResponseEntity<?> emailCheck(@RequestParam("email") String email){
+		boolean res = userService.isValidEmail(email);
+		return ResponseEntity.ok(res);
+	}
+
+	@GetMapping("/nickname-check")
+	public ResponseEntity<?> nicknameCheck(@RequestParam("nickname") String nickname){
+		boolean res = userService.isValidEmail(nickname);
+		return ResponseEntity.ok(res);
 	}
 }

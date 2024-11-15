@@ -7,11 +7,11 @@ import com.lswr.demo.model.dto.User;
 
 public interface UserService {
 	
-	// 이메일 중복 검사
-	public boolean isEmailDuplicated(String email);
+	// 사용자 이메일 유효성
+	public boolean isValidEmail(String email);
 	
-	// 닉네임 중복 검사
-	public boolean isNicknameDuplicated(String nickname);
+	// 사용자 닉네임 유효성
+	public boolean isValidNickname(String nickname);
 	
 	// 전체 사용자 목록 불러오기
 	public List<User> getUserList();
