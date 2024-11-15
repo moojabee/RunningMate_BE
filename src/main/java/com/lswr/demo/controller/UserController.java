@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -73,7 +74,7 @@ public class UserController {
             log.info("userId:"+String.valueOf(user.getUserId()));
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + token); // Authorization 헤더에 JWT 토큰 추가
-            return new ResponseEntity<>("GOOD JOB", headers, HttpStatus.OK);
+            return new ResponseEntity<>(user.getName(),headers,HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Not User",HttpStatus.BAD_REQUEST);
 	}
