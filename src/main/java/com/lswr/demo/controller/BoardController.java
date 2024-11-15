@@ -29,21 +29,22 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class BoardController {
 
 	private final BoardService boardService;
 
 	// 팔로워 게시글 조회
-	@GetMapping("/follow/{userId}")
-	public ResponseEntity<?> followList(@PathVariable long userId) { // ResquestAttribute로 수정
+	@GetMapping("/follow")
+	public ResponseEntity<?> followList(@RequestAttribute("userId") String id) { // ResquestAttribute로 수정
+		long userId = Long.parseLong(id);
 		List<Board> list = boardService.getFollowBoardList(userId);
 		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
 	}
 
 	// 동네 게시글 조회
-	@GetMapping("/neighbor/{userId}")
-	public ResponseEntity<?> neighborList(@PathVariable long userId) {
+	@GetMapping("/neighbor")
+	public ResponseEntity<?> neighborList(@RequestAttribute("userId") String id) {
+		long userId = Long.parseLong(id);
 		List<Board> list = boardService.getNeighborBoardList(userId);
 		return new ResponseEntity<List<Board>>(list, HttpStatus.OK);
 	}
