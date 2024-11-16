@@ -1,6 +1,7 @@
 package com.lswr.demo.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +14,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Party {
-	private Long id;
+public class ChatRoomCreateDto {
 	private String roomId;
-	private Long userId;
-	private LocalDateTime partiedDate;
+    private String roomName;
+    private String roomType;
+    private LocalDateTime createdDate;
+    private List<String> userList;
 }
+

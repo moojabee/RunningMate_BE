@@ -39,6 +39,6 @@
 	<!-- 4. 채팅방 참여 -->
 	<insert id="enterChatRoom" parameterType="Party">
 		INSERT INTO Party (room_id, user_id,partied_date)
-		VALUES (#{chatRoom.roomId}, #{userId}, #{partiedDate})
+		VALUES (#{roomId}, #{userId}, #{partiedDate})
 	</insert>
 </mapper>

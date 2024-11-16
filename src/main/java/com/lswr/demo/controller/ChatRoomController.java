@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lswr.demo.model.dto.ChatRoom;
+import com.lswr.demo.model.dto.ChatRoomCreateDto;
 import com.lswr.demo.model.dto.Party;
 import com.lswr.demo.model.service.ChatRoomService;
 
@@ -45,18 +46,11 @@ public class ChatRoomController {
     
     // 3. 채팅방 생성
     @PostMapping("/new-room")
-    public ResponseEntity<?> createChatRoom(@RequestAttribute("userId") String userId, @RequestBody ChatRoom chatRoom){
+    public ResponseEntity<?> createChatRoom(@RequestAttribute("userId") String userId, @RequestBody ChatRoomCreateDto chatRoomCreateDto){
+    	
+    	log.info("log: "+ chatRoomCreateDto.getUserList().toString());
     	Long id = Long.parseLong(userId);
-    	boolean res = chatRoomSerivce.createChatRoom(chatRoom);
-    	
-    	// 생성 실패
-    	if(!res) return ResponseEntity.badRequest().build();
-    	
-    	// 생성 성공
-    	Party party = new Party();
-    	party.setRoomId(chatRoom.getRoomId());
-    	party.setUserId(id);
-    	res = chatRoomSerivce.joinChatRoom(party);
+    	boolean res = chatRoomSerivce.createChatRoom(id, chatRoomCreateDto);
     	
     	// 참여 성공
     	if(res) return ResponseEntity.ok(res);
