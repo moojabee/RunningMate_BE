@@ -37,7 +37,7 @@ public class ChatRoomController {
     
     // 2. 오픈 채팅방 목록 조회
     @GetMapping("/room-list/open")
-    public ResponseEntity<?> getOpenChatRoom(@RequestAttribute("userId")String userId){
+    public ResponseEntity<?> getOpenChatRoom(@RequestAttribute("userId") String userId){
     	Long id = Long.parseLong(userId);
     	List<ChatRoom> list = chatRoomSerivce.getOpenChatRoomList(id);
     	return new ResponseEntity<List<ChatRoom>>(list,HttpStatus.OK);
