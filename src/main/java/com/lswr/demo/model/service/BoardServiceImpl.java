@@ -74,30 +74,36 @@ public class BoardServiceImpl implements BoardService{
     }
 
 	// 게시글 수정
-    @Override
-    public void updateBoard(Board board, List<MultipartFile> files) {
-        boardDao.updateBoard(board); // 게시글 내용 업데이트
-        boardDao.deleteBoardImg(board.getBoardId());  // 기존 이미지 삭제
-        try {
-        	// 기존 이미지 삭제 후 새로운 이미지 저장
-        	if (files != null && !files.isEmpty()) {
-        		List<BoardImg> boardImgs = new ArrayList<>();
-        		for (MultipartFile file : files) {
-        			String imageUrl = s3Uploader.upload(file);  // S3에 업로드 후 URL 반환
-        			BoardImg boardImg = new BoardImg();
-        			boardImg.setBoardId(board.getBoardId());
-        			boardImg.setFileName(imageUrl);
-        			boardImgs.add(boardImg);
-        		}
-        		// 새로운 이미지 URL을 DB에 저장
-        		for (BoardImg img : boardImgs) {
-        			boardDao.insertBoardImg(img);
-        		}
-        	}
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload image", e);  // 일반 예외 처리
-        }
-    }
+	@Override
+	public void updateBoard(Board board, List<Long> deleteImgIds, List<MultipartFile> files) {
+	    boardDao.updateBoard(board); // 게시글 내용 업데이트
+
+	    // 삭제 요청 이미지 삭제
+	    if (!deleteImgIds.isEmpty()) {
+	        boardDao.deleteBoardImgByIds(deleteImgIds);
+	    }
+
+	    // 새로운 이미지 추가
+	    if (files != null && !files.isEmpty()) {
+	        List<BoardImg> boardImgs = new ArrayList<>();
+	        for (MultipartFile file : files) {
+	            try {
+	                String imageUrl = s3Uploader.upload(file);  // S3 업로드
+	                BoardImg boardImg = new BoardImg();
+	                boardImg.setBoardId(board.getBoardId());
+	                boardImg.setFileName(imageUrl);
+	                boardImgs.add(boardImg);
+	            } catch (IOException e) {
+	                throw new RuntimeException("Failed to upload image", e);
+	            }
+	        }
+
+	        for (BoardImg img : boardImgs) {
+	            boardDao.insertBoardImg(img);
+	        }
+	    }
+	}
+
 
     // 게시글 삭제
     @Override

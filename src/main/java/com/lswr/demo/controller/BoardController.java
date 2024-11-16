@@ -50,10 +50,11 @@ public class BoardController {
 	}
 
 	// 게시글 작성
-	@PostMapping("/create/{userId}")
-	public ResponseEntity<?> createBoard(@PathVariable long userId,
+	@PostMapping("/create")
+	public ResponseEntity<?> createBoard(@RequestAttribute("userId") String id,
 	                                     @RequestParam("content") String content,
 	                                     @RequestParam(value = "boardImg", required = false) List<MultipartFile> files) {
+		long userId = Long.parseLong(id);
 	    Board board = new Board();
 	    board.setUserId(userId);
 	    board.setContent(content);
@@ -65,26 +66,32 @@ public class BoardController {
 	}
 
 	// 게시글 수정
-	@PutMapping("/update/{userId}/{boardId}")
-	public ResponseEntity<?> updateBoard(@PathVariable long userId,
-										 @PathVariable long boardId,
-	                                     @RequestParam("content") String content,
-	                                     @RequestParam(value = "boardImg", required = false) List<MultipartFile> files) {
+	@PutMapping("/update/{boardId}")
+	public ResponseEntity<?> updateBoard(
+	        @RequestAttribute("userId") String id,
+	        @PathVariable long boardId,
+	        @RequestParam("content") String content,
+	        @RequestParam(value = "deleteImgIds", required = false) List<Long> deleteImgIds,
+	        @RequestParam(value = "boardImg", required = false) List<MultipartFile> files) {
+
+	    long userId = Long.parseLong(id);
 	    Board board = new Board();
 	    board.setBoardId(boardId);
 	    board.setUserId(userId);
 	    board.setContent(content);
-	    
+
+	    List<Long> safeDeleteImgIds = deleteImgIds != null ? deleteImgIds : Collections.emptyList();
 	    List<MultipartFile> safeFiles = files != null ? files : Collections.emptyList();
-	    
-	    boardService.updateBoard(board, safeFiles);  // files를 따로 전달
+
+	    boardService.updateBoard(board, safeDeleteImgIds, safeFiles);
 	    return ResponseEntity.ok().build();
 	}
 
 
 	// 게시글 삭제
-	@DeleteMapping("/delete/{userId}/{boardId}")
-	public ResponseEntity<?> deleteBoard(@PathVariable Long userId, @PathVariable Long boardId) {
+	@DeleteMapping("/delete/{boardId}")
+	public ResponseEntity<?> deleteBoard(@RequestAttribute("userId") String id, @PathVariable Long boardId) {
+		long userId = Long.parseLong(id);
 	    boardService.deleteBoard(boardId, userId);
 	    return ResponseEntity.ok().build();
 	}

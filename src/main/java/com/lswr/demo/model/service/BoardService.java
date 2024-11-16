@@ -24,7 +24,7 @@ public interface BoardService {
     void createBoard(Board board, List<MultipartFile> files);
     
     // 게시글 수정
-    void updateBoard(Board board, List<MultipartFile> files);
+    void updateBoard(Board board, List<Long> deleteImgIds, List<MultipartFile> files);
     
     // 게시글 삭제
     void deleteBoard(Long boardId, Long userId);
