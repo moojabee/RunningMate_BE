@@ -77,10 +77,19 @@
 
     <!-- 댓글 정보 조회 쿼리 -->
     <select id="getCommentByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Comment">
-        SELECT comment_id, board_id, user_id, content, posted_date
-        FROM Comment
-        WHERE board_id = #{boardId}
-    </select>
+	    SELECT c.comment_id, c.board_id, c.user_id, c.content, c.posted_date,
+	           u.nickname AS nickname,
+	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
+	           CONCAT(
+	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
+	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+	           ) AS userPace
+	    FROM Comment c
+	    JOIN User u ON c.user_id = u.user_id
+	    LEFT JOIN Record r ON c.user_id = r.user_id
+	    WHERE c.board_id = #{boardId}
+	    GROUP BY c.comment_id, c.board_id, c.user_id, c.content, c.posted_date, u.nickname
+	</select>
 
     <!-- 좋아요 정보 조회 쿼리 -->
     <select id="getLikeByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Like">
@@ -117,11 +126,14 @@
         WHERE board_id = #{boardId} AND user_id = #{userId}
     </update>
 
-    <!-- 게시글 이미지 삭제 (게시글 수정 시 사용) -->
-    <delete id="deleteBoardImg" parameterType="long">
-        DELETE FROM Store
-        WHERE board_id = #{boardId}
-    </delete>
+    <!-- 삭제할 특정 이미지들만 삭제 -->
+	<delete id="deleteBoardImgByIds">
+	    DELETE FROM Store
+	    WHERE img_id IN
+	    <foreach item="id" collection="list" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</delete>
     
 
     <!-- 게시글 삭제 -->

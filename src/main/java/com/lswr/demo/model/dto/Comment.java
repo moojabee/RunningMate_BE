@@ -10,7 +10,10 @@ import lombok.Setter;
 public class Comment {
 	private Long commentId;
 	private Long boardId;
-	private Long userId;
     private String content;
     private LocalDateTime postedDate;
+    private Long userId;
+    private String nickname;
+    private Double userDist;
+    private String userPace;
 }

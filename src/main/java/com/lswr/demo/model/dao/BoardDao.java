@@ -27,7 +27,7 @@ public interface BoardDao {
 	
 	// 게시글 수정 (이미지 삭제 후 다시 삽입)
     void updateBoard(Board board);
-    void deleteBoardImg(Long boardId);
+    void deleteBoardImgByIds(List<Long> deleteImgIds);
     
     // 게시글 삭제
     void deleteBoard(Long boardId, Long userId);
