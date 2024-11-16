@@ -11,14 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatRoom {
-	enum RoomType {
-	    OPEN, PRIVATE;
-	}
-	
+public class Party {
 	private String roomId;
-    private String roomName;
-    private RoomType roomType;
-    private LocalDateTime createdDate;
+	private Long userId;
+	private LocalDateTime partiedDate;
 }
-
