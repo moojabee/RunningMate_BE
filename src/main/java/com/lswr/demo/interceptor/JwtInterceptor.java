@@ -23,7 +23,12 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-        String authorizationHeader = request.getHeader("Authorization");
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return false; // 나머지 로직 실행하지 않음
+        }
+		
+		String authorizationHeader = request.getHeader("Authorization");
 
         // Authorization 헤더가 없으면 인증 실패
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
