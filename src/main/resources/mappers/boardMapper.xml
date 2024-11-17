@@ -160,5 +160,5 @@
 		WHERE user_id = #{userId} AND board_id = #{boardId}
 	</delete>
 	
-	    
+	
 </mapper>

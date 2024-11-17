@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.lswr.demo.model.dto.Board;
 import com.lswr.demo.model.dto.BoardImg;
+import com.lswr.demo.model.dto.Comment;
+import com.lswr.demo.model.dto.User;
 
 public interface BoardDao {
 	

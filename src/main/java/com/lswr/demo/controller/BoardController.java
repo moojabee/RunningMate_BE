@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lswr.demo.model.dto.Board;
+import com.lswr.demo.model.dto.Comment;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.model.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -96,9 +98,5 @@ public class BoardController {
 	    return ResponseEntity.ok().build();
 	}
 
-	
-	
-	
-	
 	
 }

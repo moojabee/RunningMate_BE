@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lswr.demo.model.dao.BoardDao;
 import com.lswr.demo.model.dto.Board;
 import com.lswr.demo.model.dto.BoardImg;
+import com.lswr.demo.model.dto.Comment;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.util.S3Uploader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -111,15 +113,16 @@ public class BoardServiceImpl implements BoardService{
         boardDao.deleteBoard(boardId, userId);
     }
 	
-    
+    // 게시글 좋아요
     @Override
     public void getBoardLike(Long userId, Long boardId) {
     	boardDao.likeBoard(userId, boardId);
     }
     
+    // 게시글 좋아요 취소
     @Override
     public void getBoardDislike(Long userId, Long boardId) {
     	boardDao.dislikeBoard(userId, boardId);
     }
-	
+    
 }
