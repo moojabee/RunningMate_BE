@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lswr.demo.model.dao.MyPageDao">
+	
+	<!-- 유저 정보 조회 -->
+    <select id="getUserInfo" parameterType="long" resultType="com.lswr.demo.model.dto.MyPage">
+        SELECT 
+            u.user_id AS userId,
+            u.nickname,
+            u.user_img AS userImg,
+            ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
+            CONCAT(
+                FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
+                LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+            ) AS userPace,
+            (SELECT COUNT(*) FROM Board b WHERE b.user_id = u.user_id) AS boardNum,
+            (SELECT COUNT(*) FROM Following f WHERE f.following_id = u.user_id) AS followerNum,
+            (SELECT COUNT(*) FROM Following f WHERE f.user_id = u.user_id) AS followingNum
+        FROM User u
+        LEFT JOIN Record r ON u.user_id = r.user_id
+        WHERE u.user_id = #{userId}
+        GROUP BY u.user_id, u.nickname, u.user_img
+    </select>
+
+    <!-- 유저 게시글 조회 -->
+    <select id="getUserBoards" parameterType="long" resultMap="BoardResultMap">
+        SELECT 
+            b.board_id, b.user_id, b.content, b.posted_date,
+            u.nickname AS userNickname,
+            u.user_img AS userImg,
+            ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
+            CONCAT(
+                FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
+                LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+            ) AS userPace
+        FROM Board b
+        JOIN User u ON b.user_id = u.user_id
+        LEFT JOIN Record r ON b.user_id = r.user_id
+        WHERE b.user_id = #{userId}
+        GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname, u.user_img
+    </select>
+
+    <!-- 유저 런닝 기록 조회 -->
+    <select id="getUserRuns" parameterType="long" resultMap="RunResultMap">
+        SELECT 
+            r.record_id AS recordId,
+            r.user_id AS userId,
+            r.run_img AS runImg,
+            r.distance AS dist,
+            CONCAT(
+	            FLOOR(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time) / r.distance / 60), "'",
+	            LPAD(MOD(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time) / r.distance, 60), 2, '0'), "''"
+	        ) AS pace,
+            r.start_time AS startTime
+        FROM Run r
+        WHERE r.user_id = #{userId}
+        ORDER BY r.start_time DESC
+    </select>
+
+    <!-- ResultMap 설정 -->
+    <resultMap id="RunResultMap" type="com.lswr.demo.model.dto.Run">
+        <id property="recordId" column="record_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="runImg" column="run_img"/>
+        <result property="dist" column="dist"/>
+        <result property="pace" column="pace"/>
+        <result property="startTime" column="startTime"/>
+    </resultMap>
+
+    <resultMap id="BoardResultMap" type="com.lswr.demo.model.dto.Board">
+        <id property="boardId" column="board_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="postedDate" column="posted_date"/>
+        <result property="userDist" column="userDist"/>
+        <result property="userPace" column="userPace"/>
+        <result property="nickname" column="userNickname"/>
+        <result property="userImg" column="userImg"/>
+
+        <!-- 댓글 리스트 매핑 -->
+        <collection property="comment" ofType="com.lswr.demo.model.dto.Comment" column="board_id" select="getCommentByBoardId"/>
+
+        <!-- 좋아요 리스트 매핑 -->
+        <collection property="like" ofType="com.lswr.demo.model.dto.Like" column="board_id" select="getLikeByBoardId"/>
+
+        <!-- 게시글 이미지 리스트 매핑 -->
+        <collection property="boardImg" ofType="com.lswr.demo.model.dto.BoardImg" column="board_id" select="getBoardImgByBoardId"/>
+    </resultMap>
+	
+		
+</mapper>
