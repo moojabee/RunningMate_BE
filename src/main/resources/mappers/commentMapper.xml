@@ -7,7 +7,7 @@
 	<select id="getCommentsByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Comment">
 	    SELECT 
 	        c.comment_id, c.board_id, c.content, c.posted_date, 
-	        u.user_id, u.nickname,
+	        u.user_id, u.nickname, u.user_img,
 	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	        CONCAT(
 	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
@@ -17,7 +17,7 @@
 	    JOIN User u ON c.user_id = u.user_id
 	    LEFT JOIN Record r ON r.user_id = u.user_id
 	    WHERE c.board_id = #{boardId}
-	    GROUP BY c.comment_id, u.user_id
+	    GROUP BY c.comment_id, u.user_id, u.user_img
 	</select>
 	
 	<insert id="insertComment" parameterType="com.lswr.demo.model.dto.Comment">

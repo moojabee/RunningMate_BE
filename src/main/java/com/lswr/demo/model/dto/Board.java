@@ -13,6 +13,7 @@ public class Board {
 	private String nickname;
 	private String userDist;
 	private String userPace;
+	private String userImg;
 	
 	private Long boardId;
     private String content;

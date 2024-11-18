@@ -12,8 +12,10 @@ public class Comment {
 	private Long boardId;
     private String content;
     private LocalDateTime postedDate;
+    
     private Long userId;
     private String nickname;
+    private String userImg;
     private Double userDist;
     private String userPace;
 }

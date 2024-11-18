@@ -38,6 +38,7 @@
 	<select id="getBoardsByUserIds" parameterType="list" resultMap="BoardResultMap">
 	    SELECT b.board_id, b.user_id, b.content, b.posted_date,
 	           u.nickname AS userNickname,
+	           u.user_img AS userImg,
 	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	           CONCAT(
 	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
@@ -50,7 +51,7 @@
 	    <foreach item="userId" collection="userIds" open="(" separator="," close=")">
 	        #{userId}
 	    </foreach>
-	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname 
+	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname, u.user_img
 	    ORDER BY b.posted_date DESC
 	</select>
 	
@@ -63,7 +64,8 @@
 	    <result property="userDist" column="userDist"/>
 	    <result property="userPace" column="userPace"/>
 	    <result property="nickname" column="userNickname"/>
-	
+		<result property="userImg" column="userImg" />
+		
 	    <!-- 댓글 리스트 매핑 -->
 	    <collection property="comment" ofType="com.lswr.demo.model.dto.Comment" column="board_id" select="getCommentByBoardId"/>
 	
