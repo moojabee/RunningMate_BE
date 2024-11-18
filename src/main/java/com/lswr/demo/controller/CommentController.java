@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lswr.demo.model.dto.Comment;
@@ -49,6 +50,15 @@ public class CommentController {
         long userId = Long.parseLong(id);
         commentService.deleteComment(commentId, userId);
         return ResponseEntity.ok().build();
+    }
+    
+	// 댓글 작성자 로그인 사용자 확인
+	@GetMapping("/userCheck")
+	public ResponseEntity<Boolean> userCheck(@RequestAttribute("userId") String id, 
+											 @RequestParam("writerId") Long writerId) {
+        long userId = Long.parseLong(id);
+        boolean check = userId == writerId;
+        return ResponseEntity.ok(check);
     }
 
 	

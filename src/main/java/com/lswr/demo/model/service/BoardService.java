@@ -25,10 +25,7 @@ public interface BoardService {
 	// 게시글 삭제
 	void deleteBoard(Long boardId, Long userId);
 	
-	// 게시글 좋아요
-	public void getBoardLike(Long userId, Long boardId);
-	
-	// 게시글 좋아요 취소
-	public void getBoardDislike(Long userId, Long boardId);
+	// 게시글 좋아요 변경
+	int toggleLike(Long userId, Long boardId);
 	
 }

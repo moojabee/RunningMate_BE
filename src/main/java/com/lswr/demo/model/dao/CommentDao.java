@@ -6,7 +6,7 @@ import com.lswr.demo.model.dto.Comment;
 
 public interface CommentDao {
 	
-	// 댓글 리스트 조회
+	// 댓글 리스트 조회(작성자 정보도 함께 가져옴)
     List<Comment> getCommentsByBoardId(Long boardId);
 
     // 댓글 작성

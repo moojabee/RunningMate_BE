@@ -21,4 +21,6 @@ public class Board {
     private List<BoardImg> boardImg;
     private List<Comment> comment;
     private List<Like> like;
+    
+    private Integer likeCheck;
 }
