@@ -23,11 +23,17 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+		log.info("요청이 들어왔다만.. ");
+		
+        if ("websocket".equalsIgnoreCase(request.getHeader("Upgrade"))) {
+            log.info("웹소켓왔다.");
+        	return true;
+        }
+        
+		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return false; // 나머지 로직 실행하지 않음
         }
-		
 		String authorizationHeader = request.getHeader("Authorization");
 
         // Authorization 헤더가 없으면 인증 실패

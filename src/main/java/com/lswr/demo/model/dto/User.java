@@ -18,6 +18,7 @@ public class User {
     private String name;
     private String nickname;
     private String address;
+    private String userImg;
     private LocalDateTime  createdDate;
     private boolean isPrivate;
 }

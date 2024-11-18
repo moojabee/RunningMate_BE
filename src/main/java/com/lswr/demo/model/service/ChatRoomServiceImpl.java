@@ -70,4 +70,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		int res = chatDao.enterChatRoom(party);
 		return res==1;
 	}
+
+	@Override
+	public ChatRoom findChatRoomById(String id) {
+		return chatDao.selectChatRoom(id);
+	}
+	
 }

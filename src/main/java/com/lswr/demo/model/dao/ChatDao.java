@@ -18,4 +18,7 @@ public interface ChatDao {
 	
 	// 채팅방 참여
 	public int enterChatRoom(Party party);
+	
+	// 채팅방 아이디로 채팅방 찾기
+	public ChatRoom selectChatRoom(String roomId);
 }

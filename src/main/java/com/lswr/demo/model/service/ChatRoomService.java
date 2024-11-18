@@ -15,4 +15,6 @@ public interface ChatRoomService {
 	public boolean createChatRoom(Long id, ChatRoomCreateDto chatRoomCreateDto);
 
 	public boolean joinChatRoom(Party party);
+	
+	public ChatRoom findChatRoomById(String id);
 }
