@@ -1,5 +1,6 @@
 package com.lswr.demo.controller;
 
+import java.awt.color.CMMException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -110,8 +111,11 @@ public class ChatRoomController {
     	Party party = new Party();
     	party.setUserId(id);
     	party.setRoomId(roomId);
+    	party = chatRoomSerivce.getParty(party);
     	List<ChatMessage> list = chatRoomSerivce.loadChatMessage(party);
-    	log.info("요청 : "+list.toString());
+    	for(ChatMessage cm : list) {
+    		log.info(cm.toString());
+    	}
     	return ResponseEntity.ok(list);
     }
 }

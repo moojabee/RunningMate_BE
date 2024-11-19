@@ -89,4 +89,20 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		List<ChatMessage> list = chatDao.selectAllChatting(party);
 		return list;
 	}
+
+	@Override
+	public Party getParty(Party party) {
+		Party findParty = chatDao.findParty(party);
+		return findParty;
+	}
+
+	@Override
+	public boolean hasJoined(Party party) {
+		return chatDao.findChatMessage(party)!=null;
+	}
+
+	@Override
+	public boolean sendMessage(ChatMessage chatMessage) {
+		return chatDao.insertChatMessage(chatMessage)==1;
+	}
 }

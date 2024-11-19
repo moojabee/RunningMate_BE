@@ -22,4 +22,10 @@ public interface ChatRoomService {
 	public boolean leaveChatRoom(Party party);
 	
 	public List<ChatMessage> loadChatMessage(Party party);
+	
+	public Party getParty(Party party);
+	
+	public boolean hasJoined(Party party);
+	
+	public boolean sendMessage(ChatMessage chatMessage);
 }

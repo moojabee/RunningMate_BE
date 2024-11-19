@@ -65,4 +65,24 @@
         ORDER BY 
             cm.sended_date ASC
     </select>
+    
+    <!-- 8. 참여 기록 찾기 -->
+    <select id="findParty" parameterType="Party" resultType="Party">
+		SELECT *
+		FROM PARTY
+		WHERE room_id=#{roomId} and user_id=#{userId}
+	</select>
+	
+	<!-- 9.채팅방 메시지 조회 -->
+	<select id="findChatMessage" parameterType="Party" resultType="Integer">
+		SELECT COUNT(*)
+		FROM ChatMessage
+		WHERE room_id=#{roomId} and user_id=#{userId}
+	</select>
+	
+	<!-- 10.메시지 전송 -->
+	<insert id="insertChatMessage" parameterType="ChatMessage">
+   		INSERT INTO ChatMessage (message_type, room_id, user_id, sended_date, content)
+    	VALUES (#{messageType}, #{roomId}, #{userId}, #{sendedDate}, #{content})
+	</insert>
 </mapper>
