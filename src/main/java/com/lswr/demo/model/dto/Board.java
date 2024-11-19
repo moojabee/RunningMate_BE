@@ -13,6 +13,7 @@ public class Board {
 	private String nickname;
 	private String userDist;
 	private String userPace;
+	private String userImg;
 	
 	private Long boardId;
     private String content;
@@ -21,4 +22,6 @@ public class Board {
     private List<BoardImg> boardImg;
     private List<Comment> comment;
     private List<Like> like;
+    
+    private Integer likeCheck;
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.lswr.demo.model.dto.Board;
 import com.lswr.demo.model.dto.BoardImg;
+import com.lswr.demo.model.dto.Comment;
+import com.lswr.demo.model.dto.User;
 
 public interface BoardDao {
 	
@@ -32,9 +34,13 @@ public interface BoardDao {
     // 게시글 삭제
     void deleteBoard(Long boardId, Long userId);
 
-	
-	void likeBoard(Long userId, Long boardId);
-	void dislikeBoard(Long userId, Long boardId);
-	
+    // 좋아요 눌렀는지 확인
+    boolean isLikedByUser(Long userId, Long boardId);
+
+    // 좋아요 추가
+    void addLike( Long userId, Long boardId);
+
+    // 좋아요 제거
+    void removeLike(Long userId, Long boardId);
 	
 }

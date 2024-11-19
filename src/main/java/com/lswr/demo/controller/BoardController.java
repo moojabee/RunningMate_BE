@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lswr.demo.model.dto.Board;
+import com.lswr.demo.model.dto.Comment;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.model.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -95,10 +97,24 @@ public class BoardController {
 	    boardService.deleteBoard(boardId, userId);
 	    return ResponseEntity.ok().build();
 	}
+	
+	// 게시글 작성자 로그인 사용자 확인
+	@GetMapping("/userCheck")
+	public ResponseEntity<Boolean> userCheck(@RequestAttribute("userId") String id, 
+											 @RequestParam("writerId") Long writerId) {
+        long userId = Long.parseLong(id);
+        boolean check = userId == writerId;
+        return ResponseEntity.ok(check);
+    }
 
-	
-	
-	
+	// 좋아요 상태 변경
+    @PostMapping("/like/{boardId}")
+    public ResponseEntity<Integer> toggleLike(@RequestAttribute("userId") String id, 
+								             @PathVariable Long boardId) {
+        long userId = Long.parseLong(id);
+        int likeCheck = boardService.toggleLike(userId, boardId);
+        return ResponseEntity.ok(likeCheck);
+    }
 	
 	
 }

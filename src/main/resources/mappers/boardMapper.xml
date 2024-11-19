@@ -38,19 +38,20 @@
 	<select id="getBoardsByUserIds" parameterType="list" resultMap="BoardResultMap">
 	    SELECT b.board_id, b.user_id, b.content, b.posted_date,
 	           u.nickname AS userNickname,
+	           u.user_img AS userImg,
 	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	           CONCAT(
-	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
-	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
 	           ) AS userPace
 	    FROM Board b
 	    JOIN User u ON b.user_id = u.user_id
-	    LEFT JOIN Record r ON b.user_id = r.user_id
+	    LEFT JOIN Run r ON b.user_id = r.user_id
 	    WHERE b.user_id IN
 	    <foreach item="userId" collection="userIds" open="(" separator="," close=")">
 	        #{userId}
 	    </foreach>
-	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname 
+	    GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname, u.user_img
 	    ORDER BY b.posted_date DESC
 	</select>
 	
@@ -63,7 +64,8 @@
 	    <result property="userDist" column="userDist"/>
 	    <result property="userPace" column="userPace"/>
 	    <result property="nickname" column="userNickname"/>
-	
+		<result property="userImg" column="userImg" />
+		
 	    <!-- 댓글 리스트 매핑 -->
 	    <collection property="comment" ofType="com.lswr.demo.model.dto.Comment" column="board_id" select="getCommentByBoardId"/>
 	
@@ -77,18 +79,9 @@
 
     <!-- 댓글 정보 조회 쿼리 -->
     <select id="getCommentByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Comment">
-	    SELECT c.comment_id, c.board_id, c.user_id, c.content, c.posted_date,
-	           u.nickname AS nickname,
-	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
-	           CONCAT(
-	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
-	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
-	           ) AS userPace
-	    FROM Comment c
-	    JOIN User u ON c.user_id = u.user_id
-	    LEFT JOIN Record r ON c.user_id = r.user_id
-	    WHERE c.board_id = #{boardId}
-	    GROUP BY c.comment_id, c.board_id, c.user_id, c.content, c.posted_date, u.nickname
+	    SELECT * 
+	    FROM Comment
+	    WHERE board_id = #{boardId}
 	</select>
 
     <!-- 좋아요 정보 조회 쿼리 -->
@@ -142,23 +135,25 @@
         WHERE board_id = #{boardId} AND user_id = #{userId}
     </delete>
     
-    
 	
-	<!-- 좋아요 -->
-	<insert id="likeBoard" parameterType="map">
-		INSERT INTO Like (user_id, board_id)
-		SELECT #{userId}, #{boardId}
-		FROM DUAL
-		WHERE NOT EXISTS (
-			SELECT 1 FROM Like WHERE user_id = #{userId} AND board_id = #{boardId}
-		)
+	<!-- 사용자가 해당 게시글을 좋아요 눌렀는지 확인 -->
+	<select id="isLikedByUser" resultType="boolean">
+	    SELECT COUNT(*) > 0
+	    FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addLike">
+	    INSERT INTO `Like` (user_id, board_id)
+	    VALUES (#{userId}, #{boardId})
 	</insert>
 	
-	<!-- 좋아요 취소 -->
-	<delete id="dislikeBoard" parameterType="map">
-		DELETE FROM Like
-		WHERE user_id = #{userId} AND board_id = #{boardId}
+	<!-- 좋아요 제거 -->
+	<delete id="removeLike">
+	    DELETE FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
 	</delete>
 	
-	    
+	
 </mapper>
