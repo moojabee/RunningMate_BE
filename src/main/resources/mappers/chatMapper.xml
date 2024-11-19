@@ -41,8 +41,8 @@
 	</insert>
 	
 	<!-- 5. 채팅방 삭제 -->
-	<delete id="deleteUserInChatRoom">
-        DELETE FROM ChatRoom
+	<delete id="deleteUserInChatRoom" parameterType="Party">
+        DELETE FROM Party
         WHERE user_id = #{userId} AND room_id = #{roomId}
     </delete>	
     
@@ -51,5 +51,18 @@
     	SELECT *
     	FROM ChatRoom
     	WHERE room_id = #{roomId}
+    </select>
+    
+    <!-- 7. 채팅 가져오기 -->
+    <select id="selectAllChatting" parameterType="Party" resultType="ChatMessage">
+        SELECT *
+        FROM ChatMessage AS cm
+        JOIN Party p ON cm.room_id = p.room_id
+        WHERE 
+            cm.room_id = #{roomId}
+            AND cm.sended_date >= #{partiedDate}
+            AND p.user_id = #{userId}
+        ORDER BY 
+            cm.sended_date ASC
     </select>
 </mapper>
