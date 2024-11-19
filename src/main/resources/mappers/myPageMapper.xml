@@ -32,12 +32,12 @@
             u.user_img AS userImg,
             ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
             CONCAT(
-                FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
-                LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+                FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+                LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
             ) AS userPace
         FROM Board b
         JOIN User u ON b.user_id = u.user_id
-        LEFT JOIN Record r ON b.user_id = r.user_id
+        LEFT JOIN Run r ON b.user_id = r.user_id
         WHERE b.user_id = #{userId}
         GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname, u.user_img
     </select>
@@ -88,6 +88,27 @@
         <!-- 게시글 이미지 리스트 매핑 -->
         <collection property="boardImg" ofType="com.lswr.demo.model.dto.BoardImg" column="board_id" select="getBoardImgByBoardId"/>
     </resultMap>
+    
+        <!-- 댓글 정보 조회 쿼리 -->
+    <select id="getCommentByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Comment">
+	    SELECT * 
+	    FROM Comment
+	    WHERE board_id = #{boardId}
+	</select>
+
+    <!-- 좋아요 정보 조회 쿼리 -->
+    <select id="getLikeByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.Like">
+        SELECT like_id, user_id, board_id
+        FROM `Like`
+        WHERE board_id = #{boardId}
+    </select>
+
+    <!-- 게시글 이미지 정보 조회 쿼리 -->
+    <select id="getBoardImgByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.BoardImg">
+        SELECT img_id, board_id, filename
+        FROM Store
+        WHERE board_id = #{boardId}
+    </select>
 	
 		
 </mapper>
