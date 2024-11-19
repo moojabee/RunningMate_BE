@@ -50,7 +50,7 @@
     <!-- 6. 채팅방 찾기 -->
     <select id="selectChatRoom" parameterType="String" resultType="ChatRoom">
     	SELECT *
-    	FROM ChatRoom;
-    	WHERE room_id = #{roomId};
+    	FROM ChatRoom
+    	WHERE room_id = #{roomId}
     </select>
 </mapper>

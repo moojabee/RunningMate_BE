@@ -13,11 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 public class ChatMessageController {
+	
     private final SimpMessageSendingOperations messagingTemplate;
 
     @MessageMapping("/chat/message") // 클라이언트가 "/pub/chat/message"로 발행
     public void sendMessage(@Payload ChatMessage message) {
-        log.info("값 잘들어온다.");
+        if(message.getMessageType().equals("ENTER")) {
+        	message.setContent(message.getUserId()+"님이 입장하셨습니다.");
+        }
     	messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }
