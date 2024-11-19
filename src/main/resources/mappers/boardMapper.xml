@@ -41,12 +41,12 @@
 	           u.user_img AS userImg,
 	           ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	           CONCAT(
-	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
-	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+	               FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+	               LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
 	           ) AS userPace
 	    FROM Board b
 	    JOIN User u ON b.user_id = u.user_id
-	    LEFT JOIN Record r ON b.user_id = r.user_id
+	    LEFT JOIN Run r ON b.user_id = r.user_id
 	    WHERE b.user_id IN
 	    <foreach item="userId" collection="userIds" open="(" separator="," close=")">
 	        #{userId}
