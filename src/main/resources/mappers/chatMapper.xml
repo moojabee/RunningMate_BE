@@ -23,8 +23,7 @@
 		WHERE cr.room_id NOT IN (
 		SELECT p.room_id
 		FROM Party p
-		WHERE p.user_id
-		= #{userId}
+		WHERE p.user_id = #{userId}
 		) AND cr.room_type = 'OPEN'
 	</select>
 
