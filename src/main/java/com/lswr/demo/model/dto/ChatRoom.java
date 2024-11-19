@@ -6,19 +6,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ChatRoom {
-	enum RoomType {
-	    OPEN, PRIVATE;
-	}
-	
 	private String roomId;
     private String roomName;
-    private RoomType roomType;
+    private String roomType;
     private LocalDateTime createdDate;
 }
 
