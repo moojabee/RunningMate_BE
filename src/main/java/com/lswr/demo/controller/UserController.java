@@ -54,7 +54,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
+	public ResponseEntity<Long> loginUser(@RequestBody LoginDto loginDto){
 		// 로그인 성공
 		if(userService.loginUser(loginDto)) {
 			User user = userService.getUser(loginDto.getEmail());
@@ -62,9 +62,9 @@ public class UserController {
             log.info("userId:"+String.valueOf(user.getUserId()));
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + token); // Authorization 헤더에 JWT 토큰 추가
-            return new ResponseEntity<>(user.getName(),headers,HttpStatus.OK);
+            return new ResponseEntity<>(user.getUserId(),headers,HttpStatus.OK);
 		}
-		return new ResponseEntity<String>("Not User",HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("/email-check")
