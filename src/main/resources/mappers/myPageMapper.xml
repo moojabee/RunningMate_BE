@@ -188,5 +188,64 @@
         WHERE user_id = #{userId} AND follower_id = #{followerId}
     </select>
     
+    <!-- 개인정보 수정 -->
+	<update id="updateUserInfo" parameterType="User">
+	    UPDATE User
+	    <set>
+	        <if test="password != null and password != ''">
+	            password = #{password},
+	        </if>
+	        <if test="nickname != null and nickname != ''">
+	            nickname = #{nickname},
+	        </if>
+	        <if test="address != null and address != ''">
+	            address = #{address},
+	        </if>
+            <if test="userImg != null">
+	            user_img = #{userImg}, <!-- userImg가 제공되면 그대로 업데이트 -->
+	        </if>
+	        <if test="userImg == null">
+	            user_img = NULL, <!-- userImg가 null이면 NULL로 설정 -->
+	        </if>
+	    </set>
+	    WHERE user_id = #{userId}
+	</update>
+    
+    <!-- 팔로워 리스트 -->
+    <select id="findFollower" parameterType="long" resultType="Follow">
+	    SELECT 
+	        u.user_id AS userId,
+	        u.nickname AS nickname,
+	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
+	        CONCAT(
+	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+	            LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
+	        ) AS userPace,
+	        f.status AS status
+	    FROM User u
+	    LEFT JOIN Run r ON u.user_id = r.user_id
+	    JOIN Following f ON f.user_id = u.user_id
+	    WHERE f.following_id = #{userId}
+	    GROUP BY u.user_id, u.nickname, f.status
+	</select>
+	
+	<!-- 팔로잉 리스트 -->
+	<select id="findFollowing" parameterType="long" resultType="Follow">
+	    SELECT 
+	        u.user_id AS userId,
+	        u.nickname AS nickname,
+	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
+	        CONCAT(
+	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+	            LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
+	        ) AS userPace,
+	        f.status AS status
+	    FROM User u
+	    LEFT JOIN Run r ON u.user_id = r.user_id
+	    JOIN Following f ON f.following_id = u.user_id
+	    WHERE f.user_id = #{userId}
+	    GROUP BY u.user_id, u.nickname, f.status
+	</select>
+	
     
 </mapper>
