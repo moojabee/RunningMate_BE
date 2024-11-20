@@ -95,27 +95,16 @@ public class ChatRoomController {
     	return ResponseEntity.badRequest().build();
     }
     
-    // 6. 채팅방 데이터 저장
-//    @PostMapping("/add-chatting")
-//    public ResponseEntity<?> addChatting(@RequestAttribute("userId") String userId, @RequestBody ChatMessage chatting){
-//    	Long id = Long.parseLong(userId);
-//    	chatting.setUserId(id);
-//    	
-//    }
-    
-    // 7. 채팅방 데이터 불러오기
+    // 6. 채팅방 데이터 불러오기
     @GetMapping("/load-chatting/{roomId}")
     public ResponseEntity<?> loadChat(@RequestAttribute("userId") String userId, @PathVariable("roomId") String roomId){
-    	log.info("호출됨");
     	Long id = Long.parseLong(userId);
     	Party party = new Party();
     	party.setUserId(id);
     	party.setRoomId(roomId);
+    	log.info("Party : " + party.toString());
     	party = chatRoomSerivce.getParty(party);
     	List<ChatMessage> list = chatRoomSerivce.loadChatMessage(party);
-    	for(ChatMessage cm : list) {
-    		log.info(cm.toString());
-    	}
     	return ResponseEntity.ok(list);
     }
 }

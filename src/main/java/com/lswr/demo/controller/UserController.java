@@ -59,9 +59,9 @@ public class UserController {
 		if(userService.loginUser(loginDto)) {
 			User user = userService.getUser(loginDto.getEmail());
             String token = tokenService.createToken(String.valueOf(user.getUserId())); // JWT 생성
-            log.info("userId:"+String.valueOf(user.getUserId()));
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + token); // Authorization 헤더에 JWT 토큰 추가
+            log.info("userId:"+String.valueOf(user.getUserId()));
             return new ResponseEntity<>(user.getUserId(),headers,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
