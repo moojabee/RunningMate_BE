@@ -42,6 +42,26 @@
         GROUP BY b.board_id, b.user_id, b.content, b.posted_date, u.nickname, u.user_img
         ORDER BY b.posted_date DESC <!-- 게시글을 최신순으로 정렬 -->
     </select>
+    
+    <!-- 사용자가 해당 게시글을 좋아요 눌렀는지 확인 -->
+	<select id="isLikedByUser" resultType="boolean">
+	    SELECT COUNT(*) > 0
+	    FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addLike">
+	    INSERT INTO `Like` (user_id, board_id)
+	    VALUES (#{userId}, #{boardId})
+	</insert>
+	
+	<!-- 좋아요 제거 -->
+	<delete id="removeLike">
+	    DELETE FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</delete>
+    
 
     <!-- 유저 런닝 기록 조회 -->
 	<select id="getUserRuns" parameterType="long" resultType="com.lswr.demo.model.dto.Run">
@@ -102,5 +122,71 @@
         WHERE board_id = #{boardId}
     </select>
     
-        
+    
+    <!-- 게시글 이미지 삽입 -->
+    <insert id="insertMyBoardImg" parameterType="com.lswr.demo.model.dto.BoardImg">
+        INSERT INTO Store (board_id, filename)
+        VALUES (#{boardId}, #{fileName})
+    </insert>
+    
+    
+    <!-- 게시글 수정 -->
+    <update id="updateMyBoard" parameterType="com.lswr.demo.model.dto.Board">
+        UPDATE Board
+        SET content = #{content}
+        WHERE board_id = #{boardId} AND user_id = #{userId}
+    </update>
+
+    <!-- 삭제할 특정 이미지들만 삭제 -->
+	<delete id="deleteMyBoardImgByIds">
+	    DELETE FROM Store
+	    WHERE img_id IN
+	    <foreach item="id" collection="list" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</delete>
+    
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteMyBoard" parameterType="com.lswr.demo.model.dto.Board">
+        DELETE FROM Board
+        WHERE board_id = #{boardId} AND user_id = #{userId}
+    </delete>
+    
+	
+	<!-- 사용자가 해당 게시글을 좋아요 눌렀는지 확인 -->
+	<select id="isLikedMyBoard" resultType="boolean">
+	    SELECT COUNT(*) > 0
+	    FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="addLikeMyBoard">
+	    INSERT INTO `Like` (user_id, board_id)
+	    VALUES (#{userId}, #{boardId})
+	</insert>
+	
+	<!-- 좋아요 제거 -->
+	<delete id="removeLikeMyBoard">
+	    DELETE FROM `Like`
+	    WHERE user_id = #{userId} AND board_id = #{boardId}
+	</delete>
+
+
+	<!-- 계정 공개 여부 확인 -->
+    <select id="isPrivate" parameterType="long" resultType="int">
+        SELECT private
+        FROM User
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 팔로워 여부 확인 -->
+    <select id="isFollower" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM Follower
+        WHERE user_id = #{userId} AND follower_id = #{followerId}
+    </select>
+    
+    
 </mapper>

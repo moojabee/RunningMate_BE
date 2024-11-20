@@ -10,12 +10,12 @@
 	        u.user_id, u.nickname, u.user_img,
 	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	        CONCAT(
-	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance) / 60), "'",
-	            LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.startTime, r.endTime)) / SUM(r.distance), 60), 2, '0'), "''"
+	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
+	            LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
 	        ) AS userPace
 	    FROM Comment c
 	    JOIN User u ON c.user_id = u.user_id
-	    LEFT JOIN Record r ON r.user_id = u.user_id
+	    LEFT JOIN Run r ON r.user_id = u.user_id
 	    WHERE c.board_id = #{boardId}
 	    GROUP BY c.comment_id, u.user_id, u.user_img
 	</select>
