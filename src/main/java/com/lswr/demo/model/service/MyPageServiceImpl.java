@@ -11,8 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.lswr.demo.model.dao.MyPageDao;
 import com.lswr.demo.model.dto.Board;
 import com.lswr.demo.model.dto.BoardImg;
+import com.lswr.demo.model.dto.Follow;
 import com.lswr.demo.model.dto.MyPage;
 import com.lswr.demo.model.dto.Run;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.util.S3Uploader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -114,5 +116,36 @@ public class MyPageServiceImpl implements MyPageService {
 	public boolean isFollower(Long userId, Long followerId) {
 		return myPageDao.isFollower(userId, followerId) > 0;
 	}
+	
+	// 개인 정보 업데이트
+	@Override
+    public void updateUserInfo(User user, MultipartFile userImg) {
+        user.setPassword(user.getPassword());
+        // S3에 이미지 업로드
+        if (userImg != null) {
+            try {
+                String userImgUrl = s3Uploader.upload(userImg); // S3 업로드
+                user.setUserImg(userImgUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload image", e);
+            }
+        }
+
+        // DB 업데이트 요청
+        myPageDao.updateUserInfo(user);
+    }
+	
+	
+	// 팔로워 리스트
+	@Override
+    public List<Follow> getFollower(Long userId) {
+        return myPageDao.findFollower(userId);
+    }
+
+	// 팔로잉 리스트
+    @Override
+    public List<Follow> getFollowing(Long userId) {
+        return myPageDao.findFollowing(userId);
+    }
 
 }

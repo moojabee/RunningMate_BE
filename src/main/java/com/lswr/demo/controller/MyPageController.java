@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lswr.demo.model.dto.Board;
+import com.lswr.demo.model.dto.Follow;
 import com.lswr.demo.model.dto.MyPage;
 import com.lswr.demo.model.dto.Run;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.model.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
@@ -119,5 +121,41 @@ public class MyPageController {
         boolean check = userId == writerId;
         return ResponseEntity.ok(check);
     }
+	
+	// 마이페이지 수정
+	@PutMapping("/update")
+	public ResponseEntity<?> updateUserInfo(
+	    @RequestAttribute("userId") String id,
+	    @RequestParam(value = "password", required = false) String password,
+	    @RequestParam(value = "nickname", required = false) String nickname,
+	    @RequestParam(value = "address", required = false) String address,
+	    @RequestParam(value = "userImg", required = false) MultipartFile userImg) {
+
+	    long userId = Long.parseLong(id);
+	    User user = new User();
+	    user.setUserId(userId);
+	    user.setPassword(password);
+	    user.setNickname(nickname);
+	    user.setAddress(address);
+
+	    myPageService.updateUserInfo(user, userImg);
+	    return ResponseEntity.ok().build();
+	}
+	
+	// 팔로워 리스트 가져오기
+    @GetMapping("/follower/{userId}")
+    public ResponseEntity<List<Follow>> getFollowers(@PathVariable Long userId) {
+        List<Follow> follower = myPageService.getFollower(userId);
+        return ResponseEntity.ok(follower);
+    }
+
+    // 팔로잉 리스트 가져오기
+    @GetMapping("/following/{userId}")
+    public ResponseEntity<List<Follow>> getFollowing(@PathVariable Long userId) {
+        List<Follow> following = myPageService.getFollowing(userId);
+        return ResponseEntity.ok(following);
+    }
+	
+	
 
 }

@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lswr.demo.model.dto.Board;
+import com.lswr.demo.model.dto.Follow;
 import com.lswr.demo.model.dto.MyPage;
 import com.lswr.demo.model.dto.Run;
+import com.lswr.demo.model.dto.User;
 
 public interface MyPageService {
 
@@ -31,4 +33,11 @@ public interface MyPageService {
 	boolean isPrivate(Long userId);
 	// 팔로워 확인
     boolean isFollower(Long userId, Long followerId);
+    
+    // 개인 정보 수정
+    void updateUserInfo(User user, MultipartFile userImg);
+    
+    // 팔로워 팔로잉 리스트
+    List<Follow> getFollower(Long userId);
+    List<Follow> getFollowing(Long userId);
 }
