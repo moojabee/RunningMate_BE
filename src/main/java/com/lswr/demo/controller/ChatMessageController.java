@@ -36,8 +36,8 @@ public class ChatMessageController {
 			}
 		} 
 		else {
+			chatRoomService.sendMessage(message);
 			messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
-			if(chatRoomService.sendMessage(message)) log.info("잘왔다");
 		}
 	}
 }
