@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lswr.demo.model.dto.MyPage;
+import com.lswr.demo.model.dto.Run;
 import com.lswr.demo.model.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,8 @@ public class MyPageController {
     // 유저 런닝 기록 조회
     @GetMapping("/userRun/{userId}")
     public ResponseEntity<?> getUserRun(@PathVariable Long userId) {
-        MyPage userRun = myPageService.getUserRun(userId);
-        return new ResponseEntity<>(userRun, HttpStatus.OK);
+    	List<Run> runs = myPageService.getUserRun(userId);
+        return new ResponseEntity<>(runs, HttpStatus.OK);
     }
 
 

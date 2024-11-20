@@ -19,6 +19,6 @@ public class MyPage {
 	
     private List<Board> boardList;
     
-    private List<Run> recordList;
+    private List<Run> runList;
     
 }

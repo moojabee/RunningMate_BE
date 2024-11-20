@@ -33,11 +33,8 @@ public class MyPageServiceImpl implements MyPageService{
     }
 
     @Override
-    public MyPage getUserRun(Long userId) {
-        List<Run> runs = myPageDao.getUserRuns(userId);
-        MyPage myPage = new MyPage();
-        myPage.setRecordList(runs);
-        return myPage;
+    public List<Run> getUserRun(Long userId) {
+        return myPageDao.getUserRuns(userId);
     }
 	
 }
