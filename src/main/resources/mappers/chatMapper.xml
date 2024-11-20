@@ -23,8 +23,7 @@
 		WHERE cr.room_id NOT IN (
 		SELECT p.room_id
 		FROM Party p
-		WHERE p.user_id
-		= #{userId}
+		WHERE p.user_id = #{userId}
 		) AND cr.room_type = 'OPEN'
 	</select>
 
@@ -42,15 +41,48 @@
 	</insert>
 	
 	<!-- 5. 채팅방 삭제 -->
-	<delete id="deleteUserInChatRoom">
-        DELETE FROM ChatRoom
+	<delete id="deleteUserInChatRoom" parameterType="Party">
+        DELETE FROM Party
         WHERE user_id = #{userId} AND room_id = #{roomId}
     </delete>	
     
     <!-- 6. 채팅방 찾기 -->
     <select id="selectChatRoom" parameterType="String" resultType="ChatRoom">
     	SELECT *
-    	FROM ChatRoom;
-    	WHERE room_id = #{roomId};
+    	FROM ChatRoom
+    	WHERE room_id = #{roomId}
     </select>
+    
+    <!-- 7. 채팅 가져오기 -->
+    <select id="selectAllChatting" parameterType="Party" resultType="ChatMessage">
+        SELECT *
+        FROM ChatMessage AS cm
+        JOIN Party p ON cm.room_id = p.room_id
+        WHERE 
+            cm.room_id = #{roomId}
+            AND cm.sended_date >= #{partiedDate}
+            AND p.user_id = #{userId}
+        ORDER BY 
+            cm.sended_date ASC
+    </select>
+    
+    <!-- 8. 참여 기록 찾기 -->
+    <select id="findParty" parameterType="Party" resultType="Party">
+		SELECT *
+		FROM PARTY
+		WHERE room_id=#{roomId} and user_id=#{userId}
+	</select>
+	
+	<!-- 9.채팅방 메시지 조회 -->
+	<select id="findChatMessage" parameterType="Party" resultType="Integer">
+		SELECT COUNT(*)
+		FROM ChatMessage
+		WHERE room_id=#{roomId} and user_id=#{userId}
+	</select>
+	
+	<!-- 10.메시지 전송 -->
+	<insert id="insertChatMessage" parameterType="ChatMessage">
+   		INSERT INTO ChatMessage (message_type, room_id, user_id, sended_date, content)
+    	VALUES (#{messageType}, #{roomId}, #{userId}, #{sendedDate}, #{content})
+	</insert>
 </mapper>

@@ -2,6 +2,7 @@ package com.lswr.demo.model.dao;
 
 import java.util.List;
 
+import com.lswr.demo.model.dto.ChatMessage;
 import com.lswr.demo.model.dto.ChatRoom;
 import com.lswr.demo.model.dto.Party;
 
@@ -21,4 +22,19 @@ public interface ChatDao {
 	
 	// 채팅방 아이디로 채팅방 찾기
 	public ChatRoom selectChatRoom(String roomId);
+	
+	// 채팅방 나가기
+	public int deleteUserInChatRoom(Party party);
+	
+	// 채팅 불러오기
+	public List<ChatMessage> selectAllChatting(Party party);
+	
+	// 참여 기록 찾기
+	public Party findParty(Party party);
+	
+	// 특정 방 참여자 메시지 찾기
+	public Integer findChatMessage(Party party);
+	
+	// 채팅 메시지 전송
+	public int insertChatMessage(ChatMessage chatMessage);
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lswr.demo.model.dao.ChatDao;
 import com.lswr.demo.model.dao.UserDao;
+import com.lswr.demo.model.dto.ChatMessage;
 import com.lswr.demo.model.dto.ChatRoom;
 import com.lswr.demo.model.dto.ChatRoomCreateDto;
 import com.lswr.demo.model.dto.Party;
@@ -75,5 +76,33 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	public ChatRoom findChatRoomById(String id) {
 		return chatDao.selectChatRoom(id);
 	}
-	
+
+	@Override
+	public boolean leaveChatRoom(Party party) {
+		log.info("leaveChat : " + party.toString());
+		int res = chatDao.deleteUserInChatRoom(party);
+		return res==1;
+	}
+
+	@Override
+	public List<ChatMessage> loadChatMessage(Party party) {
+		List<ChatMessage> list = chatDao.selectAllChatting(party);
+		return list;
+	}
+
+	@Override
+	public Party getParty(Party party) {
+		Party findParty = chatDao.findParty(party);
+		return findParty;
+	}
+
+	@Override
+	public boolean hasJoined(Party party) {
+		return chatDao.findChatMessage(party)!=null;
+	}
+
+	@Override
+	public boolean sendMessage(ChatMessage chatMessage) {
+		return chatDao.insertChatMessage(chatMessage)==1;
+	}
 }
