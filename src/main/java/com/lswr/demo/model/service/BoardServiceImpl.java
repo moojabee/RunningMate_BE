@@ -77,7 +77,7 @@ public class BoardServiceImpl implements BoardService {
 					String imageUrl = s3Uploader.upload(file); // S3에 업로드 후 URL 반환
 					BoardImg boardImg = new BoardImg();
 					boardImg.setBoardId(board.getBoardId());
-					boardImg.setFileName(imageUrl);
+					boardImg.setBoardUrl(imageUrl);
 					boardImgs.add(boardImg);
 				}
 				// 이미지 URL을 DB에 저장
@@ -108,7 +108,7 @@ public class BoardServiceImpl implements BoardService {
 					String imageUrl = s3Uploader.upload(file); // S3 업로드
 					BoardImg boardImg = new BoardImg();
 					boardImg.setBoardId(board.getBoardId());
-					boardImg.setFileName(imageUrl);
+					boardImg.setBoardUrl(imageUrl);
 					boardImgs.add(boardImg);
 				} catch (IOException e) {
 					throw new RuntimeException("Failed to upload image", e);

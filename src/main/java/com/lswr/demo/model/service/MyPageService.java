@@ -32,7 +32,7 @@ public interface MyPageService {
 	// 비공개 확인
 	boolean isPrivate(Long userId);
 	// 팔로워 확인
-    boolean isFollower(Long userId, Long followerId);
+    boolean isFollower(Long writerId, Long loginId);
     
     // 개인 정보 수정
     void updateUserInfo(User user, MultipartFile userImg);
