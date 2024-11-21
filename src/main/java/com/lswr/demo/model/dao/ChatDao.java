@@ -9,7 +9,7 @@ import com.lswr.demo.model.dto.Party;
 public interface ChatDao {
 	
 	// 유저가 속한 채팅방리스트
-	public List<ChatRoom> selectChatRoomList(Long userId);
+	public List<ChatRoom> selectRecentChatRoomList(Long userId);
 	
 	// 오픈 채팅방 리스트
 	public List<ChatRoom> selectOpenChatRoomList(Long userId);

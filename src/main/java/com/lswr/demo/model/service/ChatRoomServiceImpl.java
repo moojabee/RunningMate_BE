@@ -27,7 +27,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	
 	@Override
 	public List<ChatRoom> getChatRoomList(Long userId) {
-		List<ChatRoom> list = chatDao.selectChatRoomList(userId);
+		List<ChatRoom> list = chatDao.selectRecentChatRoomList(userId);
 		return list;
 	}
 
