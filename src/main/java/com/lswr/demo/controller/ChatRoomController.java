@@ -1,7 +1,5 @@
 package com.lswr.demo.controller;
 
-import java.awt.color.CMMException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,6 @@ import com.lswr.demo.model.dto.ChatRoomCreateDto;
 import com.lswr.demo.model.dto.Party;
 import com.lswr.demo.model.service.ChatRoomService;
 
-import jakarta.mail.Part;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -105,6 +102,13 @@ public class ChatRoomController {
     	log.info("Party : " + party.toString());
     	party = chatRoomSerivce.getParty(party);
     	List<ChatMessage> list = chatRoomSerivce.loadChatMessage(party);
+    	return ResponseEntity.ok(list);
+    }
+    
+    // 7. 오픈 채팅방 검색
+    @GetMapping("/openChatRoom/{keyword}")
+    public ResponseEntity<?> searchOpenChatByKeyword(@PathVariable("keyword") String keyword){
+    	List<ChatRoom> list = chatRoomSerivce.getOpenChatRoomListByKeyword(keyword);
     	return ResponseEntity.ok(list);
     }
 }

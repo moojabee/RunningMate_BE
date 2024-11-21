@@ -37,4 +37,7 @@ public interface ChatDao {
 	
 	// 채팅 메시지 전송
 	public int insertChatMessage(ChatMessage chatMessage);
+
+	// 오픈 채팅방 검색
+	public List<ChatRoom> findOpenChatByKeyword(String keyword);
 }

@@ -105,4 +105,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	public boolean sendMessage(ChatMessage chatMessage) {
 		return chatDao.insertChatMessage(chatMessage)==1;
 	}
+
+	@Override
+	public List<ChatRoom> getOpenChatRoomListByKeyword(String keyword) {
+		return chatDao.findOpenChatByKeyword(keyword);
+	}
 }
