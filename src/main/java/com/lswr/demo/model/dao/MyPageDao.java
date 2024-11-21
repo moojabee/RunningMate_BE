@@ -38,7 +38,7 @@ public interface MyPageDao {
     // 비공개 계정인지
     Integer isPrivate(Long userId);
     // 팔로워 목록에 있는지
-    Integer isFollower(Long userId, Long followerId);
+    Integer isFollower(Long writerId, Long loginId);
     
     // 개인 정보 업데이트
     void updateUserInfo(User user);

@@ -93,8 +93,8 @@
 
     <!-- 게시글 이미지 정보 조회 쿼리 -->
     <select id="getBoardImgByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.BoardImg">
-        SELECT img_id, board_id, filename
-        FROM Store
+        SELECT img_id, board_id, board_url
+        FROM BoardImg
         WHERE board_id = #{boardId}
     </select>
 
@@ -107,8 +107,8 @@
 
     <!-- 게시글 이미지 삽입 -->
     <insert id="insertBoardImg" parameterType="com.lswr.demo.model.dto.BoardImg">
-        INSERT INTO Store (board_id, filename)
-        VALUES (#{boardId}, #{fileName})
+        INSERT INTO BoardImg (board_id, board_url)
+        VALUES (#{boardId}, #{boardUrl})
     </insert>
     
     
@@ -121,7 +121,7 @@
 
     <!-- 삭제할 특정 이미지들만 삭제 -->
 	<delete id="deleteBoardImgByIds">
-	    DELETE FROM Store
+	    DELETE FROM BoardImg
 	    WHERE img_id IN
 	    <foreach item="id" collection="list" open="(" separator="," close=")">
 	        #{id}

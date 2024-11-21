@@ -42,10 +42,16 @@ public class UserServiceImpl implements UserService{
 	public User getUser(String email) {
 		User user = userDao.selectUserByEmail(email);
 		if(user==null) return null;
-		log.info(user.toString());
 		return user;
 	}
 
+	@Override
+	public User getUserById(Long id) {
+		User user = userDao.selectUserById(id);
+		if(user==null) return null;
+		return user;
+	}
+	
 	@Override
 	public void registUser(User user) {
 		log.info(user.toString());

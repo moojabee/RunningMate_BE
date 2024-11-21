@@ -18,6 +18,9 @@ public interface UserService {
 	
 	// 사용자 정보 불러오기
 	public User getUser(String email);
+	
+	// 사용자 정보 불러오기
+	public User getUserById(Long id);
 
 	// 회원가입
 	public void registUser(User user);

@@ -8,5 +8,5 @@ import lombok.Setter;
 public class BoardImg {
 	private Long imgId;
 	private Long boardId;
-    private String fileName;
+    private String boardUrl;
 }

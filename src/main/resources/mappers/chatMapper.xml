@@ -53,19 +53,29 @@
     	WHERE room_id = #{roomId}
     </select>
     
-    <!-- 7. 채팅 가져오기 -->
-    <select id="selectAllChatting" parameterType="Party" resultType="ChatMessage">
-        SELECT *
-        FROM ChatMessage AS cm
-        JOIN Party p ON cm.room_id = p.room_id
-        WHERE 
-            cm.room_id = #{roomId}
-            AND cm.sended_date >= #{partiedDate}
-            AND p.user_id = #{userId}
-        ORDER BY 
-            cm.sended_date ASC
-    </select>
-    
+	<!-- 7. 채팅 가져오기 -->
+	<select id="selectAllChatting" parameterType="Party" resultType="ChatMessage">
+	    SELECT         
+		    cm.message_id AS messageId,
+	        cm.room_id AS roomId,
+	        cm.user_id AS userId,
+	        cm.sended_date AS sendedDate,
+	        cm.content AS content,
+	        cm.message_type AS messageType,
+	        u.user_img AS userImg,
+	        u.nickname AS nickname
+	    FROM ChatMessage AS cm
+	    JOIN Party p ON cm.room_id = p.room_id
+	    JOIN User u ON cm.user_id = u.user_id
+	    WHERE 
+	        cm.room_id = #{roomId}
+	        AND cm.sended_date >= #{partiedDate}
+	        AND p.user_id = #{userId}
+	    ORDER BY 
+	        cm.sended_date ASC
+	</select>
+
+  
     <!-- 8. 참여 기록 찾기 -->
     <select id="findParty" parameterType="Party" resultType="Party">
 		SELECT *
