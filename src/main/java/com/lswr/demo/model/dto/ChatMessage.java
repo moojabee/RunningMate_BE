@@ -20,4 +20,5 @@ public class ChatMessage {
 	private String content;
 	private String messageType; 
 	private String userImg;
+	private String nickname;
 }

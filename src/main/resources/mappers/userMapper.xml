@@ -3,6 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lswr.demo.model.dao.UserDao">
+	<!-- Id User 조회 -->
+	<select id="selectUserById" parameterType="long"
+		resultType="User">
+		SELECT *
+		FROM user
+		WHERE user_id = #{userId}
+	</select>
 	<!-- email User 조회 -->
 	<select id="selectUserByEmail" parameterType="String"
 		resultType="User">

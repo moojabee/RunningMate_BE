@@ -11,6 +11,7 @@ public interface UserDao {
 	List<User> selectAll();
 	void insertUser(User user);
 	void updateUser(User user);
+	User selectUserById(Long id);
 	User selectUserByEmail(String email);
 	User selectUserByNickname(String nickname);
 	User login(LoginDto loginDto);
