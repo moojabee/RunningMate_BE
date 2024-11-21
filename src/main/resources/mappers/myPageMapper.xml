@@ -66,7 +66,7 @@
     <!-- 유저 런닝 기록 조회 -->
 	<select id="getUserRuns" parameterType="long" resultType="com.lswr.demo.model.dto.Run">
 	    SELECT 
-	        r.record_id AS recordId,
+	        r.run_id AS runId,
 	        r.user_id AS userId,
 	        r.run_img AS runImg,
 	        r.distance AS dist,
@@ -117,16 +117,16 @@
 
     <!-- 게시글 이미지 정보 조회 쿼리 -->
     <select id="getBoardImgByBoardId" parameterType="long" resultType="com.lswr.demo.model.dto.BoardImg">
-        SELECT img_id, board_id, filename
-        FROM Store
+        SELECT img_id, board_id, board_url
+        FROM BoardImg
         WHERE board_id = #{boardId}
     </select>
     
     
     <!-- 게시글 이미지 삽입 -->
     <insert id="insertMyBoardImg" parameterType="com.lswr.demo.model.dto.BoardImg">
-        INSERT INTO Store (board_id, filename)
-        VALUES (#{boardId}, #{fileName})
+        INSERT INTO BoardImg (board_id, board_url)
+        VALUES (#{boardId}, #{boardUrl})
     </insert>
     
     
@@ -139,7 +139,7 @@
 
     <!-- 삭제할 특정 이미지들만 삭제 -->
 	<delete id="deleteMyBoardImgByIds">
-	    DELETE FROM Store
+	    DELETE FROM BoardImg
 	    WHERE img_id IN
 	    <foreach item="id" collection="list" open="(" separator="," close=")">
 	        #{id}
@@ -184,8 +184,8 @@
     <!-- 팔로워 여부 확인 -->
     <select id="isFollower" parameterType="map" resultType="int">
         SELECT COUNT(*)
-        FROM Follower
-        WHERE user_id = #{userId} AND follower_id = #{followerId}
+        FROM Following
+        WHERE user_id = #{loginId} AND following_id = #{writerId}
     </select>
     
     <!-- 개인정보 수정 -->

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Run {
-	private Long recordId;
+	private Long runId;
 	private Long userId;
     private String runImg;
     private String dist;
