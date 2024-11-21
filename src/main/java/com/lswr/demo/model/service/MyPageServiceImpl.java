@@ -69,7 +69,7 @@ public class MyPageServiceImpl implements MyPageService {
 					String imageUrl = s3Uploader.upload(file); // S3 업로드
 					BoardImg boardImg = new BoardImg();
 					boardImg.setBoardId(board.getBoardId());
-					boardImg.setFileName(imageUrl);
+					boardImg.setBoardUrl(imageUrl);
 					boardImgs.add(boardImg);
 				} catch (IOException e) {
 					throw new RuntimeException("Failed to upload image", e);
@@ -113,8 +113,8 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 팔로워 확인
 	@Override
-	public boolean isFollower(Long userId, Long followerId) {
-		return myPageDao.isFollower(userId, followerId) > 0;
+	public boolean isFollower(Long writerId, Long loginId) {
+		return myPageDao.isFollower(writerId, loginId) > 0;
 	}
 	
 	// 개인 정보 업데이트
