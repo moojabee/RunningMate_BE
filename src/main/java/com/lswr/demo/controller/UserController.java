@@ -61,7 +61,7 @@ public class UserController {
             String token = tokenService.createToken(String.valueOf(user.getUserId())); // JWT 생성
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + token); // Authorization 헤더에 JWT 토큰 추가
-            log.info("userId:"+String.valueOf(user.getUserId()));
+            user.setPassword("");
             return new ResponseEntity<>(user,headers,HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
