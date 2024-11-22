@@ -54,10 +54,11 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		party.setUserId(id);
 		boolean invitedSuccess = joinChatRoom(party);
 	
-		for (String userEmail : chatRoomCreateDto.getUserList()) {
+		for (String nickname : chatRoomCreateDto.getUserList()) {
+			log.info("nickname : " + nickname);
 			party  = new Party();
 			party.setRoomId(chatRoom.getRoomId());
-			party.setUserId(userDao.selectUserByEmail(userEmail).getUserId());
+			party.setUserId(userDao.selectUserByNickname(nickname).getUserId());
 			invitedSuccess = joinChatRoom(party);
 		}
 		
