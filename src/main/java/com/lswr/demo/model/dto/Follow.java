@@ -8,6 +8,7 @@ import lombok.Setter;
 public class Follow {
 	private Long userId;
     private String nickname;
+    private String userImg;
     private String userDist;
     private String userPace;
     private int status;

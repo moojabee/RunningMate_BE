@@ -219,6 +219,7 @@
 	    SELECT 
 	        u.user_id AS userId,
 	        u.nickname AS nickname,
+	        u.user_img AS userImg,
 	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	        CONCAT(
 	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
@@ -237,6 +238,7 @@
 	    SELECT 
 	        u.user_id AS userId,
 	        u.nickname AS nickname,
+	        u.user_img AS userImg,
 	        ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
 	        CONCAT(
 	            FLOOR(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance) / 60), "'",
