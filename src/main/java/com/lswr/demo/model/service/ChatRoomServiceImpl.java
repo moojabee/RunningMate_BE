@@ -38,7 +38,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	}
 
 	@Override
-	public boolean createChatRoom(Long id, ChatRoomCreateDto chatRoomCreateDto) {
+	public String createChatRoom(Long id, ChatRoomCreateDto chatRoomCreateDto) {
 		log.info("createChat : "+chatRoomCreateDto.toString());
 		ChatRoom chatRoom = new ChatRoom();
 		chatRoom.setRoomName(chatRoomCreateDto.getRoomName());
@@ -47,7 +47,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 		chatRoom.setCreatedDate(LocalDateTime.now());
 		int res = chatDao.createChatRoom(chatRoom);
 	
-		if(res!=1) return res!=1 ;
+		if(res!=1) return null;
 	
 		Party party = new Party();
 		party.setRoomId(chatRoom.getRoomId());
@@ -61,7 +61,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 			invitedSuccess = joinChatRoom(party);
 		}
 		
-		return invitedSuccess;
+		if(invitedSuccess) return chatRoom.getRoomId();
+		return null;
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public boolean hasJoined(Party party) {
-		return chatDao.findChatMessage(party)!=null;
+		return chatDao.findChatMessage(party) > 0;
 	}
 
 	@Override
