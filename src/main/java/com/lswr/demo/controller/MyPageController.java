@@ -116,7 +116,7 @@ public class MyPageController {
 	// 게시글 작성자 로그인 사용자 확인
 	@GetMapping("/userCheck")
 	public ResponseEntity<Boolean> userCheck(@RequestAttribute("userId") String id, 
-											 @RequestParam("userId") Long writerId) {
+											 @RequestParam("writerId") Long writerId) {
         long userId = Long.parseLong(id);
         boolean check = userId == writerId;
         return ResponseEntity.ok(check);
