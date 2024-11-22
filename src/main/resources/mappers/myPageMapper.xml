@@ -9,6 +9,7 @@
         SELECT 
             u.user_id AS userId,
             u.nickname,
+            u.address,
             u.user_img AS userImg,
             ROUND(COALESCE(SUM(r.distance), 0), 2) AS userDist,
             CONCAT(
@@ -184,8 +185,10 @@
     <!-- 팔로워 여부 확인 -->
     <select id="isFollower" parameterType="map" resultType="int">
         SELECT COUNT(*)
-        FROM Following
-        WHERE user_id = #{loginId} AND following_id = #{writerId}
+	    FROM Following
+	    WHERE user_id = #{loginId} 
+	      AND following_id = #{writerId}
+	      AND status = 1
     </select>
     
     <!-- 개인정보 수정 -->

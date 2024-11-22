@@ -10,6 +10,7 @@ import lombok.Setter;
 public class MyPage {
 	private Long userId;
 	private String nickname;
+	private String address;
 	private String userDist;
 	private String userPace;
 	private String userImg;

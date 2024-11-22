@@ -106,7 +106,7 @@ public class MyPageController {
 
     // 팔로워 여부 확인
     @GetMapping("/isFollower/{userId}")
-    public ResponseEntity<Boolean> isFollower(@PathVariable Long writerId, 
+    public ResponseEntity<Boolean> isFollower(@PathVariable("userId") Long writerId, 
     										  @RequestAttribute("userId") String id) {
     	long loginId = Long.parseLong(id);
         boolean isFollower = myPageService.isFollower(writerId, loginId);
@@ -116,7 +116,7 @@ public class MyPageController {
 	// 게시글 작성자 로그인 사용자 확인
 	@GetMapping("/userCheck")
 	public ResponseEntity<Boolean> userCheck(@RequestAttribute("userId") String id, 
-											 @RequestParam("writerId") Long writerId) {
+											 @RequestParam("userId") Long writerId) {
         long userId = Long.parseLong(id);
         boolean check = userId == writerId;
         return ResponseEntity.ok(check);
