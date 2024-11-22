@@ -5,6 +5,7 @@ import java.util.List;
 import com.lswr.demo.model.dto.ChatMessage;
 import com.lswr.demo.model.dto.ChatRoom;
 import com.lswr.demo.model.dto.Party;
+import com.lswr.demo.model.dto.User;
 
 public interface ChatDao {
 	
@@ -40,4 +41,10 @@ public interface ChatDao {
 
 	// 오픈 채팅방 검색
 	public List<ChatRoom> findOpenChatByKeyword(String keyword);
+	
+	// 유저 리스트 조회
+	public List<User> getUsersByRoomId(String roomId);
+	
+	// 채팅방 정보 불러오기
+	public ChatRoom getChatRoomInfo(String roomId);
 }

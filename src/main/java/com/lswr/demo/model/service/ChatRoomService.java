@@ -6,6 +6,7 @@ import com.lswr.demo.model.dto.ChatMessage;
 import com.lswr.demo.model.dto.ChatRoom;
 import com.lswr.demo.model.dto.ChatRoomCreateDto;
 import com.lswr.demo.model.dto.Party;
+import com.lswr.demo.model.dto.User;
 
 public interface ChatRoomService {
 
@@ -30,4 +31,8 @@ public interface ChatRoomService {
 	public boolean sendMessage(ChatMessage chatMessage);
 	
 	public List<ChatRoom> getOpenChatRoomListByKeyword(String keyword);
+	
+	public List<User> getUserByRoomId(String roomId);
+	
+	public ChatRoom getChatRoomInfo(String roomId);
 }
