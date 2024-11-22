@@ -99,7 +99,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
 	@Override
 	public boolean hasJoined(Party party) {
-		return chatDao.findChatMessage(party)!=null;
+		return chatDao.findChatMessage(party) > 0;
 	}
 
 	@Override
