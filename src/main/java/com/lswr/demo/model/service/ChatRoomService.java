@@ -13,7 +13,7 @@ public interface ChatRoomService {
 	
 	public List<ChatRoom> getOpenChatRoomList(Long userId);
 
-	public boolean createChatRoom(Long id, ChatRoomCreateDto chatRoomCreateDto);
+	public String createChatRoom(Long id, ChatRoomCreateDto chatRoomCreateDto);
 
 	public boolean joinChatRoom(Party party);
 	

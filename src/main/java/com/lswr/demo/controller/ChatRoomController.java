@@ -62,10 +62,10 @@ public class ChatRoomController {
     	
     	log.info("log: "+ chatRoomCreateDto.getUserList().toString());
     	Long id = Long.parseLong(userId);
-    	boolean res = chatRoomSerivce.createChatRoom(id, chatRoomCreateDto);
+    	String res = chatRoomSerivce.createChatRoom(id, chatRoomCreateDto);
     	
     	// 참여 성공
-    	if(res) return ResponseEntity.ok(res);
+    	if(res!=null) return ResponseEntity.ok(res);
     	
     	// 참여 실패
     	return ResponseEntity.badRequest().build();

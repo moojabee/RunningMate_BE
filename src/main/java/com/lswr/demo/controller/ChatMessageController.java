@@ -32,15 +32,17 @@ public class ChatMessageController {
 		message.setUserImg(user.getUserImg());
 		
 		if (message.getMessageType().equals("ENTER")) {
+			log.info("입장했습니다");
 			Party party = new Party();
 			party.setRoomId(message.getRoomId());
 			party.setUserId(message.getMessageId());
-			if (!chatRoomService.hasJoined(party)) {
-				message.setContent(message.getUserId() + "님이 입장하셨습니다.");
-				messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+			if (chatRoomService.hasJoined(party)) {
+				message.setContent(message.getNickname() + "님이 입장하셨습니다.");
 				chatRoomService.sendMessage(message);
+				messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 			}
 		} 
+
 		else {
 			chatRoomService.sendMessage(message);
 			messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);

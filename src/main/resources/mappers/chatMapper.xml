@@ -124,8 +124,7 @@
 		resultType="Integer">
 		SELECT COUNT(*)
 		FROM ChatMessage
-		WHERE room_id=#{roomId} and
-		user_id=#{userId}
+		WHERE room_id=#{roomId} and user_id=#{userId}
 	</select>
 
 	<!-- 10.메시지 전송 -->
