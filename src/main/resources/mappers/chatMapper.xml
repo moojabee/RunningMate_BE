@@ -142,4 +142,31 @@
 		WHERE room_name LIKE CONCAT('%', #{keyWword}, '%')
 		AND room_type = 'OPEN'
 	</select>
+	
+	<!-- 12. 유저리스트 조회 -->
+    <select id="getUsersByRoomId" parameterType="String" resultType="User">
+        SELECT 
+            u.user_id AS userId,
+            u.email,
+            u.name,
+            u.nickname,
+            u.address,
+            u.user_img AS userImg,
+            u.created_date AS createdDate,
+            u.private AS isPrivate
+        FROM `User` u 
+        INNER JOIN `Party` p ON u.user_id = p.user_id
+        WHERE p.room_id = #{roomId}
+    </select>
+    
+    <!-- 13. 채팅방 정보 조회 -->
+    <select id="getChatRoomInfo" parameterType="String" resultType="ChatRoom">
+        SELECT 
+            room_id AS roomId,
+            room_name AS roomName,
+            room_type AS roomType,
+            created_date AS createdDate
+        FROM `ChatRoom`
+        WHERE room_id = #{roomId}
+    </select>
 </mapper>

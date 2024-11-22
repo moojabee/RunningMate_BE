@@ -112,4 +112,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	public List<ChatRoom> getOpenChatRoomListByKeyword(String keyword) {
 		return chatDao.findOpenChatByKeyword(keyword);
 	}
+
+	@Override
+	public List<User> getUserByRoomId(String roomId) {
+		return chatDao.getUsersByRoomId(roomId);
+	}
+
+	@Override
+	public ChatRoom getChatRoomInfo(String roomId) {
+		return chatDao.getChatRoomInfo(roomId);
+	}
 }

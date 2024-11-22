@@ -18,6 +18,7 @@ import com.lswr.demo.model.dto.ChatMessage;
 import com.lswr.demo.model.dto.ChatRoom;
 import com.lswr.demo.model.dto.ChatRoomCreateDto;
 import com.lswr.demo.model.dto.Party;
+import com.lswr.demo.model.dto.User;
 import com.lswr.demo.model.service.ChatRoomService;
 
 import lombok.RequiredArgsConstructor;
@@ -110,5 +111,19 @@ public class ChatRoomController {
     public ResponseEntity<?> searchOpenChatByKeyword(@PathVariable("keyword") String keyword){
     	List<ChatRoom> list = chatRoomSerivce.getOpenChatRoomListByKeyword(keyword);
     	return ResponseEntity.ok(list);
+    }
+    
+    // 8. 채팅방 유저리스트 검색
+    @GetMapping("/userList/{roomId}")
+    public ResponseEntity<?> getUserList(@PathVariable("roomId") String roomId){
+    	List<User> list = chatRoomSerivce.getUserByRoomId(roomId);
+    	return ResponseEntity.ok(list);
+    }
+    
+    // 9. 채팅방 정보 조회
+    @GetMapping("/chatRoomInfo/{roomId}")
+    public ResponseEntity<?> getChatRoomInfo(@PathVariable("roomId") String roomId){
+    	ChatRoom chatRoom= chatRoomSerivce.getChatRoomInfo(roomId);
+    	return ResponseEntity.ok(chatRoom);
     }
 }
