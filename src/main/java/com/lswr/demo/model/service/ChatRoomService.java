@@ -28,4 +28,6 @@ public interface ChatRoomService {
 	public boolean hasJoined(Party party);
 	
 	public boolean sendMessage(ChatMessage chatMessage);
+	
+	public List<ChatRoom> getOpenChatRoomListByKeyword(String keyword);
 }

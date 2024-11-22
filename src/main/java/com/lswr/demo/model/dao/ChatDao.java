@@ -9,7 +9,7 @@ import com.lswr.demo.model.dto.Party;
 public interface ChatDao {
 	
 	// 유저가 속한 채팅방리스트
-	public List<ChatRoom> selectChatRoomList(Long userId);
+	public List<ChatRoom> selectRecentChatRoomList(Long userId);
 	
 	// 오픈 채팅방 리스트
 	public List<ChatRoom> selectOpenChatRoomList(Long userId);
@@ -37,4 +37,7 @@ public interface ChatDao {
 	
 	// 채팅 메시지 전송
 	public int insertChatMessage(ChatMessage chatMessage);
+
+	// 오픈 채팅방 검색
+	public List<ChatRoom> findOpenChatByKeyword(String keyword);
 }

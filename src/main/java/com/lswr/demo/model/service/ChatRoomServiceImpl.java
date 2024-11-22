@@ -27,7 +27,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	
 	@Override
 	public List<ChatRoom> getChatRoomList(Long userId) {
-		List<ChatRoom> list = chatDao.selectChatRoomList(userId);
+		List<ChatRoom> list = chatDao.selectRecentChatRoomList(userId);
 		return list;
 	}
 
@@ -104,5 +104,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 	@Override
 	public boolean sendMessage(ChatMessage chatMessage) {
 		return chatDao.insertChatMessage(chatMessage)==1;
+	}
+
+	@Override
+	public List<ChatRoom> getOpenChatRoomListByKeyword(String keyword) {
+		return chatDao.findOpenChatByKeyword(keyword);
 	}
 }
