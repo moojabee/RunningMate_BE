@@ -7,37 +7,37 @@
 	<select id="selectUserById" parameterType="long"
 		resultType="User">
 		SELECT *
-		FROM user
+		FROM User
 		WHERE user_id = #{userId}
 	</select>
 	<!-- email User 조회 -->
 	<select id="selectUserByEmail" parameterType="String"
 		resultType="User">
 		SELECT *
-		FROM user
+		FROM User
 		WHERE email = #{email}
 	</select>
 	<!-- nickname User 조회 -->
 	<select id="selectUserByNickname" parameterType="String"
 		resultType="User">
 		SELECT *
-		FROM user
+		FROM User
 		where nickname = #{nickname}
 	</select>
 	<!-- User 로그인 -->
 	<select id="login" parameterType="LoginDto" resultType="User">
 		SELECT *
-		FROM user
+		FROM User
 		where email = #{email} and password = #{password}
 	</select>
 	<!-- UserList 조회 -->
 	<select id="selectAll" resultType="User">
 		SELECT *
-		FROM user
+		FROM User
 	</select>
 	<!-- User 추기 -->
 	<insert id="insertUser" parameterType="User">
-		INSERT INTO USER (email, password, name, nickname, address
+		INSERT INTO User (email, password, name, nickname, address
 		<if test="isPrivate != null">
 			, private
 		</if>
@@ -50,7 +50,7 @@
 	</insert>
 	<!-- User 정보 변경 -->
 	<update id="updateUser" parameterType="User">
-		UPDATE USER
+		UPDATE User
 		SET
 		email =
 		#{email},
