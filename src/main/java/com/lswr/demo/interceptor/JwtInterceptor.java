@@ -24,7 +24,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 	
-		log.info("요청이 들어왔다.");
+	    long startTime = System.currentTimeMillis();
+	    log.info("요청이 들어왔다. 시작 시간: " + startTime);
         // WebSocket 요청 통과
         if ("websocket".equalsIgnoreCase(request.getHeader("Upgrade"))) {
             log.info("웹소켓 요청 통과");
@@ -40,7 +41,8 @@ public class JwtInterceptor implements HandlerInterceptor {
 
 		String authorizationHeader = request.getHeader("Authorization");
 		log.info(authorizationHeader);
-        // Authorization 헤더가 없으면 인증 실패
+        
+		// Authorization 헤더가 없으면 인증 실패
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Authorization header is missing or invalid");
             return false;
@@ -64,6 +66,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         
         // 요청을 계속 처리할 수 있도록 허용
+        long endTime = System.currentTimeMillis();
+        log.info("요청 처리 완료. 소요 시간: " + (endTime - startTime) + "ms");
+        
         return true;
 	}
 }

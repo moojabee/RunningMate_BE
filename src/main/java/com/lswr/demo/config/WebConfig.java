@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.lswr.demo.interceptor.JwtInterceptor;
 
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
 
@@ -21,16 +22,16 @@ public class WebConfig implements WebMvcConfigurer{
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/userAuth/*"); 
+                .excludePathPatterns("/userAuth/**"); 
     }
     
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE","OPTIONS")
-                .allowedHeaders("*")
-                .exposedHeaders("Authorization", "Content-Type")
-                .allowCredentials(true);
+                .allowedOrigins("https://dynamic-pixie-884077.netlify.app")  // 클라이언트의 주소
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("Authorization", "*")
+                .exposedHeaders("Authorization")
+                .allowCredentials(true);  // 인증 정보 허용
     }
 }
