@@ -17,8 +17,8 @@
                 LPAD(MOD(SUM(TIMESTAMPDIFF(SECOND, r.start_time, r.end_time)) / SUM(r.distance), 60), 2, '0'), "''"
             ) AS userPace,
             (SELECT COUNT(*) FROM Board b WHERE b.user_id = u.user_id) AS boardNum,
-            (SELECT COUNT(*) FROM Following f WHERE f.following_id = u.user_id) AS followerNum,
-            (SELECT COUNT(*) FROM Following f WHERE f.user_id = u.user_id) AS followingNum
+            (SELECT COUNT(*) FROM Following f WHERE f.following_id = u.user_id AND f.status = 1) AS followerNum,
+            (SELECT COUNT(*) FROM Following f WHERE f.user_id = u.user_id AND f.status = 1) AS followingNum
         FROM User u
         LEFT JOIN Run r ON u.user_id = r.user_id
         WHERE u.user_id = #{userId}
@@ -191,6 +191,16 @@
 	      AND status = 1
     </select>
     
+    <!-- 팔로우 요청 여부 확인 -->
+	<select id="isFollowRequest" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM Following
+	    WHERE user_id = #{loginId}
+	      AND following_id = #{writerId}
+	      AND status = 0
+	</select>
+    
+    
     <!-- 개인정보 수정 -->
 	<update id="updateUserInfo" parameterType="User">
 	    UPDATE User
@@ -252,5 +262,29 @@
 	    GROUP BY u.user_id, u.nickname, f.status
 	</select>
 	
+    <!-- 팔로우 추가 -->
+    <insert id="insertFollowing" parameterType="map">
+        INSERT INTO Following (user_id, following_id, status)
+        VALUES (#{loginId}, #{targetId}, #{status})
+    </insert>
+	
+	<!-- 팔로워 삭제 -->
+    <delete id="deleteFollower" parameterType="map">
+        DELETE FROM Following
+        WHERE user_id = #{targetId} AND following_id = #{loginId}
+    </delete>
+
+    <!-- 팔로잉 삭제 -->
+    <delete id="deleteFollowing" parameterType="map">
+        DELETE FROM Following
+        WHERE user_id = #{loginId} AND following_id = #{targetId}
+    </delete>
+
+    <!-- 팔로우 상태 수정 -->
+    <update id="updateFollowStatus" parameterType="map">
+        UPDATE Following
+        SET status = 1
+        WHERE user_id = #{targetId} AND following_id = #{loginId} AND status = 0
+    </update>
     
 </mapper>

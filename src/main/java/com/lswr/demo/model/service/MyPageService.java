@@ -33,6 +33,8 @@ public interface MyPageService {
 	boolean isPrivate(Long userId);
 	// 팔로워 확인
     boolean isFollower(Long writerId, Long loginId);
+    // 팔로우 요청 여부 확인
+    boolean isFollowRequest(Long writerId, Long loginId);
     
     // 개인 정보 수정
     void updateUserInfo(User user, MultipartFile userImg);
@@ -40,4 +42,15 @@ public interface MyPageService {
     // 팔로워 팔로잉 리스트
     List<Follow> getFollower(Long userId);
     List<Follow> getFollowing(Long userId);
+    
+    // 팔로우 추가
+    void addFollowing(long loginId, long targetId);
+    
+    // 팔로워, 팔로잉 삭제
+    void deleteFollower(long targetId, long loginId);
+    void deleteFollowing(long loginId, long targetId);
+    
+    // 팔로워 사앹 변경
+    void updateFollowStatus(long targetId, long loginId);
+    
 }

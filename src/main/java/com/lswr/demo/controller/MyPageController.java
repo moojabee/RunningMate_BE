@@ -113,6 +113,16 @@ public class MyPageController {
         return ResponseEntity.ok(isFollower);
     }
     
+    // 팔로우 요청 여부 확인
+    @GetMapping("/isFollowRequest/{userId}")
+    public ResponseEntity<Boolean> isFollowRequest(@PathVariable("userId") Long writerId,
+                                                          @RequestAttribute("userId") String id) {
+        long loginId = Long.parseLong(id);
+        boolean isRequest = myPageService.isFollowRequest(writerId, loginId);
+        return ResponseEntity.ok(isRequest);
+    }
+
+    
 	// 게시글 작성자 로그인 사용자 확인
 	@GetMapping("/userCheck")
 	public ResponseEntity<Boolean> userCheck(@RequestAttribute("userId") String id, 
@@ -155,7 +165,42 @@ public class MyPageController {
         List<Follow> following = myPageService.getFollowing(userId);
         return ResponseEntity.ok(following);
     }
-	
+    
+    // 팔로우 추가
+    @PostMapping("/follow/{userId}")
+    public ResponseEntity<?> addFollowing(@PathVariable("userId") Long userId,
+                                          @RequestAttribute("userId") String logInUserId) {
+        long loginId = Long.parseLong(logInUserId);
+        myPageService.addFollowing(loginId, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    
+    // 팔로워 삭제
+    @DeleteMapping("/follower/{userId}")
+    public ResponseEntity<?> deleteFollower(@PathVariable("userId") Long userId,
+                                            @RequestAttribute("userId") String logInUserId) {
+        long loginId = Long.parseLong(logInUserId);
+        myPageService.deleteFollower(userId, loginId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // 팔로잉 삭제
+    @DeleteMapping("/following/{userId}")
+    public ResponseEntity<?> deleteFollowing(@PathVariable("userId") Long userId,
+                                             @RequestAttribute("userId") String logInUserId) {
+        long loginId = Long.parseLong(logInUserId);
+        myPageService.deleteFollowing(loginId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // 팔로우 상태 수정 (요청 승인)
+    @PutMapping("/follow/{userId}")
+    public ResponseEntity<?> updateFollowStatus(@PathVariable("userId") Long userId,
+                                                @RequestAttribute("userId") String logInUserId) {
+        long loginId = Long.parseLong(logInUserId);
+        myPageService.updateFollowStatus(userId, loginId);
+        return ResponseEntity.ok().build();
+    }
 	
 
 }

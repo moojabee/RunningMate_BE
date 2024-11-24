@@ -117,6 +117,13 @@ public class MyPageServiceImpl implements MyPageService {
 		return myPageDao.isFollower(writerId, loginId) > 0;
 	}
 	
+	// 팔로워 요청 확인
+	@Override
+	public boolean isFollowRequest(Long writerId, Long loginId) {
+	    return myPageDao.isFollowRequest(writerId, loginId) > 0;
+	}
+
+	
 	// 개인 정보 업데이트
 	@Override
     public void updateUserInfo(User user, MultipartFile userImg) {
@@ -148,4 +155,33 @@ public class MyPageServiceImpl implements MyPageService {
         return myPageDao.findFollowing(userId);
     }
 
+    // 팔로우 추가
+    @Override
+    public void addFollowing(long loginId, long targetId) {
+        Integer isPrivate = myPageDao.isPrivate(targetId);
+
+        // status 결정 (0: 요청 대기 상태, 1: 즉시 팔로우)
+        int status = isPrivate == 1 ? 1 : 0;
+
+        myPageDao.insertFollowing(loginId, targetId, status);
+    }
+    
+    // 팔로워 삭제
+    @Override
+    public void deleteFollower(long targetId, long loginId) {
+        myPageDao.deleteFollower(targetId, loginId);
+    }
+
+    // 팔로잉 삭제
+    @Override
+    public void deleteFollowing(long loginId, long targetId) {
+        myPageDao.deleteFollowing(loginId, targetId);
+    }
+
+    // 팔로워 상태 변경
+    @Override
+    public void updateFollowStatus(long targetId, long loginId) {
+        myPageDao.updateFollowStatus(targetId, loginId);
+    }
+    
 }

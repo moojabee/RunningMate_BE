@@ -39,6 +39,9 @@ public interface MyPageDao {
     Integer isPrivate(Long userId);
     // 팔로워 목록에 있는지
     Integer isFollower(Long writerId, Long loginId);
+    // 팔로우 요청 상태 확인
+    Integer isFollowRequest(Long writerId, Long loginId);
+
     
     // 개인 정보 업데이트
     void updateUserInfo(User user);
@@ -46,5 +49,14 @@ public interface MyPageDao {
     // 팔로워 팔로잉
     List<Follow> findFollower(Long userId);
     List<Follow> findFollowing(Long userId);
+    
+    // 팔로우 추가
+    void insertFollowing(Long loginId, Long targetId, int status);
+    // 팔로워 삭제
+    void deleteFollower(Long targetId, Long loginId); 
+    // 팔로잉 삭제
+    void deleteFollowing(Long loginId, Long targetId); 
+    // 상태 수정
+    void updateFollowStatus(Long targetId, Long loginId); 
     
 }
