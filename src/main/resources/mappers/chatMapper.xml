@@ -115,7 +115,7 @@
 	<!-- 8. 참여 기록 찾기 -->
 	<select id="findParty" parameterType="Party" resultType="Party">
 		SELECT *
-		FROM PARTY
+		FROM Party
 		WHERE room_id=#{roomId} and user_id=#{userId}
 	</select>
 
