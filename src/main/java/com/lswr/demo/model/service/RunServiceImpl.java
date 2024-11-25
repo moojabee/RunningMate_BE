@@ -16,7 +16,7 @@ public class RunServiceImpl implements RunService {
 	@Override
 	public boolean addRunRecord(RunResultDto resultDto) {
 		int res = runDao.addRunRecord(resultDto);
-		return res==1;
+		return res > 0;
 	}
 
 }

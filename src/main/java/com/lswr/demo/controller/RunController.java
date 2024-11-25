@@ -1,5 +1,6 @@
 package com.lswr.demo.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -23,11 +24,15 @@ public class RunController {
 	
 	// 1. run 기록 저장
 	@PostMapping("/record")
-	public ResponseEntity<?> saveRunRecord(@RequestAttribute("userId") String userId, @RequestBody RunResultDto runResult){
+	public ResponseEntity<?> saveRunRecord(@RequestAttribute("userId") String userId, 
+										   @RequestBody RunResultDto runResult){
 		Long id = Long.parseLong(userId);
 		runResult.setUserId(id);
 		boolean res = runService.addRunRecord(runResult);
-		if(res) ResponseEntity.ok("Good");
-		return ResponseEntity.badRequest().build();
+		if (res) {
+            return ResponseEntity.ok("Record saved successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save record");
+        }
 	}
 }
