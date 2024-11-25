@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lswr.demo.model.dao.RunDao">
+
+    <!-- 런닝 기록 추가 -->
+    <insert id="addRunRecord" parameterType="RunResultDto">
+        INSERT INTO `Run` (`user_id`, `start_time`, `end_time`, `distance`, `run_img`)
+        VALUES (#{userId}, #{startTime}, #{endTime}, #{distance}, #{runImg});
+    </insert>
+
+</mapper>
