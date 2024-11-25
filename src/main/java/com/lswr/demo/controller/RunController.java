@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lswr.demo.model.dto.RunResultDto;
+import com.lswr.demo.model.service.RunService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RunController {
 
+	private final RunService runService;
+	
 	// 1. run 기록 저장
 	@PostMapping("/record")
 	public ResponseEntity<?> saveRunRecord(@RequestAttribute("userId") String userId, @RequestBody RunResultDto runResult){
 		Long id = Long.parseLong(userId);
 		runResult.setUserId(id);
-		
-		// 서비스로 전송
-		return ResponseEntity.ok("Good");
+		boolean res = runService.addRunRecord(runResult);
+		if(res) ResponseEntity.ok("Good");
+		return ResponseEntity.badRequest().build();
 	}
 }
