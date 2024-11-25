@@ -10,7 +10,8 @@ import lombok.Setter;
 public class RunResultDto {
 	private Long runId;
 	private Long userId;
-    private String runImg;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private double distance;
+    private String runImg;
 }
