@@ -117,6 +117,7 @@ public class ChatRoomController {
     @GetMapping("/userList/{roomId}")
     public ResponseEntity<?> getUserList(@PathVariable("roomId") String roomId){
     	List<User> list = chatRoomSerivce.getUserByRoomId(roomId);
+    	log.info(list.toString());
     	return ResponseEntity.ok(list);
     }
     
