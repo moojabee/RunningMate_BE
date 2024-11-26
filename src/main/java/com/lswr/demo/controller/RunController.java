@@ -28,9 +28,9 @@ public class RunController {
 										   @RequestBody RunResultDto runResult){
 		Long id = Long.parseLong(userId);
 		runResult.setUserId(id);
-		boolean res = runService.addRunRecord(runResult);
-		if (res) {
-            return ResponseEntity.ok("Record saved successfully");
+		RunResultDto savedResult = runService.addRunRecord(runResult);
+        if (savedResult != null) {
+            return ResponseEntity.ok(savedResult);
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save record");
         }
