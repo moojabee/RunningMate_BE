@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://dynamic-pixie-884077.netlify.app")  // 클라이언트의 주소
+        		.allowedOrigins("https://dynamic-pixie-884077.netlify.app","http://localhost:5173","https:runningmate.store")  // 클라이언트의 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Authorization", "*")
                 .exposedHeaders("Authorization")

@@ -1,6 +1,7 @@
 package com.lswr.demo.model.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +21,6 @@ public class ChatRoom {
     private LocalDateTime createdDate;
     private Long lastChatId;
     private ChatMessage lastChat;
+    private List<User> userList;
 }
 
